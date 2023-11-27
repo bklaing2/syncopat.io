@@ -1,0 +1,81 @@
+body {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas: "navbar" "main";
+  gap: 4rem;
+  justify-items: center;
+}
+
+@media only screen and (max-width: 30rem) {
+  body { gap: 3rem; }
+}
+
+#main {
+  grid-area: main;
+  height: 100%;
+  padding: 1rem;
+  overflow: scroll;
+}
+
+.ignore { display: contents; }
+.hide { display: none; }
+
+
+
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+
+.button {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+
+  text-align: center;
+  background-color: lightgray;
+  border: none;
+  border-radius: 15px;
+
+  box-shadow: 0px 1px 1px black;
+  cursor: pointer;
+
+  color: black;
+
+  transition:
+    box-shadow 0.25s,
+    filter 0.25s;
+}
+
+.button:hover {
+  box-shadow: 0px 0px 1px black;
+  filter: brightness(90%);
+}
+
+.button:active {
+  box-shadow: inset 0px 1px 1px black;
+  filter: brightness(80%);
+}
+
+
+.form {
+  display: contents;
+}
+
+.auth-form {
+  display: grid;
+  grid-template-rows: 1rem 2rem 1rem 2rem 1rem;
+  flex-direction: column;
+
+  margin-top: 2rem;
+  gap: 0.5rem;
+}
+
+.auth-form input {
+  margin-bottom: 0.75rem;
+}

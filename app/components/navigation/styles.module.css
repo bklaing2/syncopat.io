@@ -1,0 +1,56 @@
+.container {
+  grid-area: navbar;
+  width: 100%;
+  max-width: 100%;
+  background-color: rgb(200, 200, 200);
+
+  overflow: scroll;
+}
+
+ul.navbar {
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1rem;
+  padding-bottom: 0.6rem;
+
+  color: black;
+
+  display: grid;
+  grid-template-columns: repeat(6, min-content) minmax(min-content, 1fr) min-content;
+  align-items: center;
+  justify-items: end;
+
+  overflow: scroll;
+}
+
+
+.title {
+  color: gray;
+  display: contents;
+}
+
+
+@media only screen and (max-width: 46rem) {
+  .title a span { display: none; }
+}
+
+.decoration {
+  color: darkgray;
+  font-weight: lighter;
+}
+
+.decoration:first-of-type { margin-right: -1rem; }
+.decoration:last-of-type { margin-left: -1rem; }
+
+
+.navLink {
+  font-size: 1.2rem;
+  color: black;
+}
+
+.active { text-decoration: underline; }
+
+
+.email { grid-column: span 2; }
+.email, .link { color: gray; }

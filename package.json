@@ -1,5 +1,5 @@
 {
-  "name": "syncopation",
+  "name": "syncopatio",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -14,13 +14,22 @@
     "@remix-run/node": "^2.2.0",
     "@remix-run/react": "^2.2.0",
     "@remix-run/serve": "^2.2.0",
+    "@supabase/ssr": "^0.0.9",
+    "@supabase/supabase-js": "^2.38.4",
     "isbot": "^3.6.8",
+    "match-sorter": "^6.3.1",
+    "qs": "^6.11.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-select": "^5.8.0",
+    "react-textarea-autosize": "^8.5.3",
+    "sort-by": "^1.2.0",
+    "tiny-invariant": "^1.3.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^2.2.0",
     "@remix-run/eslint-config": "^2.2.0",
+    "@types/qs": "^6.9.9",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
     "eslint": "^8.38.0",

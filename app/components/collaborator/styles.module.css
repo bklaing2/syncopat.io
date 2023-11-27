@@ -1,0 +1,18 @@
+.collaborator {
+  display: contents;
+  color: gray;
+}
+
+.emailUrl {
+  font-size: 0.8rem;
+  color: rgb(50, 50, 50)
+}
+
+
+.externalCollaborators {
+  grid-column: span 3;
+  margin-top: 1rem;
+  font-size: 0.8rem;
+  color: gray;
+}
+.externalCollaborator { color: white; }

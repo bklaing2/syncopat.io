@@ -1,0 +1,33 @@
+.title {
+  width: 100%;
+  border: none;
+  font-size: 2rem;
+  display: block;
+}
+
+.role { color: gray; }
+
+.settings {
+  font-size: 1.75rem;
+  color: gray;
+  transition: color 0.1s ease-in-out;
+}
+
+.role, .settings { user-select: none; }
+
+.settings:hover { color: white; }
+
+@media only screen and (max-width: 30rem) {
+  .title {
+    grid-column: span 3;
+    margin-top: 2rem;
+  }
+  .role {
+    grid-row: 1;
+    grid-column: 2;
+  }
+  .settings {
+    grid-row: 1;
+    grid-column: 3;
+  }
+}

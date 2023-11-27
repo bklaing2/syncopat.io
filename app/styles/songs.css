@@ -1,0 +1,212 @@
+/* Layout */
+#song {
+  width: 100%;
+  height: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    "header"
+    "sections";
+}
+
+#header {
+  grid-area: header;
+  
+  padding-bottom: 1rem;
+  border-bottom: 1px solid gray;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: baselines;
+}
+
+#sections {
+  grid-area: sections;
+  width: auto;
+
+  margin-bottom: -1rem;
+  margin-left: -1.5rem;
+  margin-right: -1rem;
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+
+  overflow: auto;
+}
+
+
+
+
+/* Header */
+#title {
+  flex-grow: 1;
+  display: block;
+  font-size: 2rem;
+  border: none;
+}
+
+
+#header-details {
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+
+.settings {
+  flex-grow: 0;
+  padding: 0;
+
+  color: gray;
+  background-color: transparent;
+  border: none;
+  
+  cursor: pointer;
+  transition: color 0.1s ease-in-out;
+}
+
+.settings::before {
+  content: '⚙&#xFE0E;';
+}
+
+.settings:hover { color: white; }
+
+#header-details .settings {
+  font-size: 1.75rem;
+}
+
+
+
+#song-role {
+  font-size: 1rem;
+  color: gray;
+}
+
+
+
+/* Section */
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.section[data-collapsed=true] { color: gray; }
+
+
+/* Section -- Options */
+.section .options {
+  height: 100%;
+  width: 1rem;
+
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+
+  transition: opacity 0.125s ease-in-out;
+}
+
+.section:hover .options, .section[data-collapsed=true] .options { opacity: 1; }
+
+/* Section -- Options -- Collapse */
+.section .options .collapse-input { display: none; }
+
+.section .options .collapse {
+  flex-grow: 1;
+  color: gray;
+  cursor: pointer;
+  transition: color 0.1s ease-in-out;
+}
+
+.section .options .collapse:hover { color: white; }
+
+.section[data-collapsed=false] .options .collapse::before { content: '▽'; }
+.section[data-collapsed=false] .options .collapse:hover::before { content: '▼'; }
+.section[data-collapsed=true] .options .collapse::before { content: '▷'; }
+.section[data-collapsed=true] .options .collapse:hover::before { content: '▶'; }
+
+/* Section -- Options -- Settings */
+.section[data-collapsed=true] .options .settings {
+  display: none;
+}
+
+
+
+/* Settings Modal */
+/* .section-settings {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "section-type-label section-type-select"
+    "linked-label linked-checkbox"
+    "save-button save-button";
+
+  gap: 0.5rem;
+  justify-items: start;
+} */
+
+
+
+/* Section -- Content */
+.section .content {
+  height: auto;
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+
+.section .link {
+  user-select: none;
+  margin-left: 0.75rem;
+}
+
+.section .label, .section .lines {
+  opacity: 1;
+  overflow: hidden;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.section .label {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.section .lines {
+  width: 100%;
+  /* display: flex;
+  flex-direction: column; */
+  font-family: var(--mono-font);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: pre-wrap;
+  resize: none;
+}
+
+.section[data-collapsed=true] .lines {
+  height: 0;
+  opacity: 0;
+}
+
+
+.line {
+  width: 100%;
+  font-family: var(--mono-font);
+  user-select:unset;
+}
+
+.line:hover {
+  background-color: rgba(20, 20, 20, 0.75);
+  border-bottom: 1px solid gray;
+}

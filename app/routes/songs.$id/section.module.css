@@ -1,0 +1,138 @@
+.section {
+  width: 100%;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  grid-template-rows: repeat(3, min-content);
+  grid-template-areas:
+    "collapse label"
+    "collapse lines"
+    "settings lines";
+
+  column-gap: 0.5rem;
+  align-items: start;
+
+  overflow: visible;
+}
+
+.section:first-child { margin-top: 2rem; }
+.section:last-child { margin-bottom: 6rem; }
+
+@media only screen and (min-width: 30rem) {
+  .section:hover:not(:has(.addSection:hover)) .collapse,
+  .section:hover:not(:has(.addSection:hover)) .settings {
+    opacity: 1;
+  }
+}
+
+
+.section[data-focused=true] .collapse, .section[data-focused=true] .settings {
+  opacity: 1;
+}
+
+
+
+
+.label {
+  grid-area: label;
+  font-size: 0.9rem;
+  color: gray;
+}
+
+.linked {
+  user-select: none;
+  margin-left: 0.75rem;
+}
+
+
+.content {
+  grid-area: lines;
+  width: 100%;
+  /* height: auto; */
+  margin-top: 0.2rem;
+
+  font-family: var(--mono-font);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  white-space: pre-wrap;
+  
+  resize: none;
+}
+
+
+
+.collapse {
+  grid-area: collapse;
+  height: 100%;
+  margin-top: -3px;
+  color: gray;
+
+  opacity: 0;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.1s ease-in-out, opacity 0.125s ease-in-out;
+}
+
+.collapse:hover { color: white; }
+.section[data-collapsed=true] .collapse { opacity: 1; }
+
+.section[data-collapsed=false] .collapse::before { content: '▽'; }
+.section[data-collapsed=false] .collapse:hover::before { content: '▼'; }
+.section[data-collapsed=true] .collapse::before { content: '▷'; }
+.section[data-collapsed=true] .collapse:hover::before { content: '▶'; }
+
+
+
+.settings {
+  grid-area: settings;
+  padding-bottom: 2px;
+  color: gray;
+  opacity: 0;
+  user-select: none;
+  transition: opacity 0.125s ease-in-out;
+}
+
+.settings:hover { color: white; }
+
+.section[data-collapsed=true] .settings { display: none; }
+.section[data-collapsed=true] .content { display: none; }
+
+
+
+
+
+/* Add Section */
+.addSection {
+  position: absolute;
+  bottom: -2rem;
+
+  margin-left: 1.5rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  
+  font-size: 0.8rem;
+  line-height: 0.75rem;
+  color: gray;
+  border: 1px dashed gray; /* rgba(0, 204, 255, 0.7); */
+  border-radius: 10rem;
+
+  opacity: 0;
+  user-select: none;
+  transition: opacity 0.125s ease-in-out;
+}
+
+.addSection.first {
+  top: -2rem;
+  bottom: unset;
+}
+
+.addSection:hover { opacity: 1; }
+
+[data-advanced-edit=true] .settings,
+[data-advanced-edit=true] .collapse,
+[data-advanced-edit=true] .addSection {
+  opacity: 1;
+}
