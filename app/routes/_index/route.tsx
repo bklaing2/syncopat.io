@@ -9,7 +9,7 @@ export default function Index () {
       alignItems: 'center'
     }}>
       <h1>syncopat.io!</h1><br />
-      <p>Sync songs between da band. Collaborate in real time on lyrics.</p>
+      <p>Sync songs between da band. Collaborate in real time on lyrics. This app sux</p>
     </div>
   )
 }
