@@ -79,3 +79,12 @@ body {
 .auth-form input {
   margin-bottom: 0.75rem;
 }
+
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}

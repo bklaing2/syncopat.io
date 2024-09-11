@@ -33,3 +33,19 @@ export async function inviteUser(request: Request, email: string, redirect?: str
   const { supabase } = Supabase(request, true)
   return await supabase.auth.admin.inviteUserByEmail(email, { redirectTo: redirect })
 }
+
+export async function uploadImage(file: File, supabase: SupabaseClient, type: "artist" | "album"){
+  try { 
+    const u = await user(supabase)
+    const { error: uploadError } = await supabase.storage
+      .from('avatars')
+      .upload(`${u.id}.jpg`, file, {
+        contentType: 'image/jpg',
+        upsert: true
+      })
+
+    if (uploadError) throw uploadError
+  } catch (error: any) {
+    console.log(error.message)
+  }
+}
