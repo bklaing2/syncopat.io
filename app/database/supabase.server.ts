@@ -42,7 +42,7 @@ export async function uploadImage(file: File, supabase: SupabaseClient, type: "a
       .upload(`${u.id}.jpg`, file, {
         contentType: 'image/jpg',
         upsert: true
-      })
+      }) //Take this function and add it to the respective pages
 
     if (uploadError) throw uploadError
   } catch (error: any) {
