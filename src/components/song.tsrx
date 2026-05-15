@@ -1,9 +1,12 @@
+import { saveSong } from '#/fs';
 import type { Song as SongType } from '#/types';
 
 export component Song(props: { song: SongType | null }) {
   if (!props.song) return;
 
-  <h1 class="text-2xl mb-8">{props.song.fileHandle.name.split(".")[0]}</h1>
+  <h1 class="text-2xl">{props.song.fileHandle.name.split(".")[0]}</h1>
+  <button class="mb-8" onClick={() => saveSong(props.song)}>"Save"</button>
+
 
   <p class="flex flex-col">
     for (const section of props.song.sections) {

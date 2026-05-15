@@ -23,6 +23,7 @@
     "@tsrx/vite-plugin-solid": "^0.0.38",
     "remark-frontmatter": "^5.0.0",
     "remark-parse": "^11.0.0",
+    "remark-stringify": "^11.0.0",
     "solid-js": "^1.9.12",
     "tailwindcss": "^4.1.18",
     "unified": "^11.0.5",

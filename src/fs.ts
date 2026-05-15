@@ -1,7 +1,9 @@
 import type { Section, Song } from "#/types";
+import { capitalize } from "#/util";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
 import { visit } from "unist-util-visit";
 import { type Compiler, type Processor, unified } from "unified";
 
@@ -72,4 +74,25 @@ export async function getSong() {
     .process(markdown);
 
   return song.result as Song;
+}
+
+export async function saveSong(song: Song) {
+  song.sections = song.sections.map((s) => {
+    const textarea = document.getElementById(s.id) as HTMLTextAreaElement | null;
+    return { ...s, content: textarea?.value || "" };
+  });
+
+  const markdown = await unified()
+    .use(remarkParse)
+    .use(remarkFrontmatter)
+    .use(remarkStringify)
+    .process(
+      `---\n${song.frontmatter}\n---\n${song.sections
+        .map((s) => `# ${capitalize(s.type)}\n\n${s.content}`)
+        .join("\n\n")}`,
+    );
+
+  const writable = await song.fileHandle.createWritable();
+  await writable.write(String(markdown));
+  await writable.close();
 }
