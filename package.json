@@ -1,41 +1,44 @@
 {
-  "name": "syncopatio",
+  "name": "ghost_note",
   "private": true,
-  "sideEffects": false,
   "type": "module",
   "scripts": {
-    "build": "remix build",
-    "dev": "remix dev --manual",
-    "start": "remix-serve ./build/index.js",
-    "typecheck": "tsc"
+    "dev": "vite dev --port 3000",
+    "build": "vite build",
+    "start": "node .output/server/index.mjs",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "format": "biome format",
+    "lint": "biome lint",
+    "check": "biome check"
   },
   "dependencies": {
-    "@remix-run/css-bundle": "^2.2.0",
-    "@remix-run/node": "^2.2.0",
-    "@remix-run/react": "^2.2.0",
-    "@remix-run/serve": "^2.2.0",
-    "@supabase/ssr": "^0.0.9",
-    "@supabase/supabase-js": "^2.38.4",
-    "isbot": "^3.6.8",
-    "match-sorter": "^6.3.1",
-    "qs": "^6.11.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-select": "^5.8.0",
-    "react-textarea-autosize": "^8.5.3",
-    "sort-by": "^1.2.0",
-    "tiny-invariant": "^1.3.1"
+    "@tailwindcss/vite": "^4.1.18",
+    "@tanstack/router-plugin": "^1.133.21",
+    "@tanstack/solid-router": "latest",
+    "@tanstack/solid-router-devtools": "latest",
+    "@tanstack/solid-router-ssr-query": "latest",
+    "@tanstack/solid-start": "latest",
+    "@tsrx/solid": "^0.1.9",
+    "@tsrx/vite-plugin-solid": "^0.0.38",
+    "solid-js": "^1.9.12",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
-    "@remix-run/dev": "^2.2.0",
-    "@remix-run/eslint-config": "^2.2.0",
-    "@types/qs": "^6.9.9",
-    "@types/react": "^18.2.20",
-    "@types/react-dom": "^18.2.7",
-    "eslint": "^8.38.0",
-    "typescript": "^5.1.6"
+    "@biomejs/biome": "2.4.5",
+    "@solidjs/testing-library": "^0.8.10",
+    "@tanstack/devtools-vite": "latest",
+    "@tsrx/typescript-plugin": "^0.3.59",
+    "jsdom": "^28.1.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.0",
+    "vite-plugin-solid": "^2.11.12",
+    "vitest": "^4.1.5"
   },
-  "engines": {
-    "node": ">=18.0.0"
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "lightningcss"
+    ]
   }
 }
