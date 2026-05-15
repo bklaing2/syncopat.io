@@ -7,7 +7,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools'
 
 import { HydrationScript } from 'solid-js/web'
-import { Suspense } from 'solid-js'
+import { createSignal, onMount, Suspense } from 'solid-js'
 
 import styleCss from '../styles.css?url'
 
@@ -19,6 +19,9 @@ export const Route = createRootRouteWithContext()({
 })
 
 function RootComponent() {
+  const [isCompatible, setIsCompatible] = createSignal(true);
+  onMount(() => setIsCompatible("showOpenFilePicker" in self));
+
   return (
     <html>
       <head>
@@ -27,7 +30,7 @@ function RootComponent() {
       </head>
       <body>
         <Suspense>
-          <Outlet />
+          {isCompatible() ? <Outlet /> : "Your browser does not support the File System Access API. Please use a compatible browser. (e.g., Chrome, Edge)"}
           <TanStackRouterDevtools />
         </Suspense>
         <Scripts />
