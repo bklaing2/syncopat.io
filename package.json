@@ -21,8 +21,12 @@
     "@tanstack/solid-start": "latest",
     "@tsrx/solid": "^0.1.9",
     "@tsrx/vite-plugin-solid": "^0.0.38",
+    "remark-frontmatter": "^5.0.0",
+    "remark-parse": "^11.0.0",
     "solid-js": "^1.9.12",
-    "tailwindcss": "^4.1.18"
+    "tailwindcss": "^4.1.18",
+    "unified": "^11.0.5",
+    "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.4.5",

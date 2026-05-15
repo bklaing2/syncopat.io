@@ -1,14 +1,16 @@
+import { getSong } from '#/fs'
+import type { Song } from '#/types';
 import { createFileRoute } from '@tanstack/solid-router'
+import { createSignal } from 'solid-js';
 
 export const Route = createFileRoute('/')({ component: Home })
 
 function Home() {
+  const [song, setSong] = createSignal<Song | null>(null);
+
   return (
-    <div class="p-8">
-      <h1 class="text-4xl font-bold">Welcome to TanStack Start</h1>
-      <p class="mt-4 text-lg">
-        Edit <code>src/routes/index.tsx</code> to get started.
-      </p>
+    <div>
+      <button onClick={() => getSong().then(setSong)}>Select song</button>
     </div>
   )
 }
