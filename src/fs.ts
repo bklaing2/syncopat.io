@@ -1,9 +1,9 @@
+import type { Section, Song } from "#/types";
 import type { Root } from "mdast";
 import remarkFrontmatter from "remark-frontmatter";
 import remarkParse from "remark-parse";
 import { visit } from "unist-util-visit";
 import { type Compiler, type Processor, unified } from "unified";
-import type { Section, Song } from "#/types";
 
 export async function getSong() {
   const [fileHandle] = await window.showOpenFilePicker();
