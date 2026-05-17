@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`full 1`] = `
+{
+  "frontmatter": "title: Example Song
+album: Example Album",
+  "sections": [
+    {
+      "content": "",
+      "id": "5fb74af3-8f5c-48e5-b70c-763126b6d0fb",
+      "type": "intro",
+    },
+    {
+      "content": "verse 1 lyric line 1
+verse 1 lyric line 2
+verse 1 lyric line 3
+verse 1 lyric line 4",
+      "id": "e5d6e830-7a21-4241-ad25-cb30366c6902",
+      "type": "verse",
+    },
+    {
+      "content": "chorus linked lyric line 1
+chorus linked lyric line 2
+chorus linked lyric line 3
+chorus linked lyric line 4",
+      "id": "6bd286ed-1c13-4e30-91c8-70fd062c9cbe",
+      "type": "chorus %%🔗chorus%%",
+    },
+    {
+      "content": "verse 1 lyric line 1
+verse 1 lyric line 2
+verse 1 lyric line 3
+verse 1 lyric line 4",
+      "id": "bf4483d7-a636-45bd-8e89-ac32b434a972",
+      "type": "verse",
+    },
+    {
+      "content": "chorus linked lyric line 1
+chorus linked lyric line 2
+chorus linked lyric line 3
+chorus linked lyric line 4",
+      "id": "1935eabc-9506-4606-8cde-e860115347ae",
+      "type": "chorus %%🔗chorus%%",
+    },
+    {
+      "content": "bridge lyric line 1
+bridge lyric line 2
+bridge linked lyric line 3 %%🔗0%%
+bridge linked lyric line 4 %%🔗1%%
+
+bridge lyric line a
+bridge lyric line b
+bridge linked lyric line 3 %%🔗0%%
+bridge linked lyric line 4 %%🔗1%%",
+      "id": "b2723f2d-b92a-4313-94ea-895c8c4270b1",
+      "type": "bridge",
+    },
+    {
+      "content": "",
+      "id": "caae27bc-6bc4-4a46-a14e-e61dea3940d0",
+      "type": "interlude",
+    },
+    {
+      "content": "chorus linked lyric line 1
+chorus linked lyric line 2
+chorus linked lyric line 3
+chorus unlinked lyric line 4 %%⛓️‍💥%%",
+      "id": "cbc6b2ea-6ff0-4c71-ad4b-810372ab05c3",
+      "type": "chorus %%🔗chorus%%",
+    },
+    {
+      "content": "chorus lyric line 1
+chorus lyric line 2
+chorus lyric line 3
+chorus linked lyric line 4 %%🔗chorus%%",
+      "id": "52720feb-df26-43da-8002-b986342e5c2f",
+      "type": "chorus",
+    },
+    {
+      "content": "refrain lyric line 1
+refrain lyric line 2
+refrain lyric line 3
+bridge linked lyric line 4 %%🔗1%%",
+      "id": "896d9b74-9cbb-4356-b5ad-284b9a885324",
+      "type": "refrain",
+    },
+    {
+      "content": "",
+      "id": "f6ca3953-fa2d-4511-ad3d-ef477b70e9a9",
+      "type": "outro",
+    },
+  ],
+}
+`;
