@@ -34,11 +34,15 @@ export const parse = (markdown: string) => unified()
             .map((child) => child.value)
             .join("")
 
+          const { content: title, link } = parseLine(value);
+          if (typeof link !== "string" && link !== undefined)
+            throw new Error("Section links must be strings or undefined, received `" + typeof link + "`.");
+
           currentSection = {
-            id: song.sections.length.toString(),
-            title: getContent(value),
+            id: `section ${song.sections.length}`,
+            title,
             lines: [],
-            link: getLink(value)
+            link
           };
 
           return;
@@ -48,16 +52,19 @@ export const parse = (markdown: string) => unified()
 
         // Push blank line when multiple paragraphs
         if (currentSection.lines.length > 0)
-          currentSection.lines.push({ id: crypto.randomUUID(), content: "", link: null });
+          currentSection.lines.push({
+            id: `${currentSection!.id} line ${currentSection.lines.length}`,
+            content: ""
+          });
 
         // Extract lines from children nodes
         if ("children" in node)
           currentSection.lines.push(...node.children
             .flatMap((child) => {
               const lines = "value" in child ? child.value : ""
-              return lines.split("\n").map((line) => ({
-                id: crypto.randomUUID(),
-                content: line,
+              return lines.split("\n").map((line, j) => ({
+                id: `${currentSection!.id} line ${currentSection!.lines.length + j}`,
+                ...parseLine(line)
               }))
             })
           );
@@ -73,10 +80,12 @@ export const parse = (markdown: string) => unified()
   .then((file) => file.result as Song);
 
 
-const LINK_REGEX = /^(?<title>.*?)(?:\s+%%🔗(?<link>.*?)%%)?$/;
+const LINK_REGEX = /^(?<content>.*?)(?:\s+%%(?:(?:🔗(?<link>[^%]+))|(?<broken>⛓️‍💥))%%)?$/
 
-const getContent = (input: string) =>
-  input.match(LINK_REGEX)?.groups?.title ?? ""
-
-const getLink = (input: string) =>
-  input.match(LINK_REGEX)?.groups?.link
+const parseLine = (input: string) => {
+  const { content = input, link, broken } = input.match(LINK_REGEX)?.groups ?? {};
+  return {
+    content: content.trim(),
+    link: !broken ? /^\d+$/.test(link) ? parseInt(link) : link?.trim() : null,
+  }
+}

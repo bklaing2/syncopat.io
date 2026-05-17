@@ -4,7 +4,7 @@ album: Example Album
 ---
 # Verse
 
-verse 1 lyric line 1
-verse 1 lyric line 2
-verse 1 lyric line 3
-verse 1 lyric line 4
+verse 1 line 1
+verse 1 line 2
+verse 1 line 3
+verse 1 line 4

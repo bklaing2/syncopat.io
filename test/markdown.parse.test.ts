@@ -35,10 +35,10 @@ test("one section", async () => {
         id: expect.any(String),
         title: "Verse",
         lines: [
-          { id: expect.any(String), content: "verse 1 lyric line 1" },
-          { id: expect.any(String), content: "verse 1 lyric line 2" },
-          { id: expect.any(String), content: "verse 1 lyric line 3" },
-          { id: expect.any(String), content: "verse 1 lyric line 4" },
+          { id: expect.any(String), content: "verse 1 line 1" },
+          { id: expect.any(String), content: "verse 1 line 2" },
+          { id: expect.any(String), content: "verse 1 line 3" },
+          { id: expect.any(String), content: "verse 1 line 4" },
         ]
       },
     ],
@@ -69,7 +69,8 @@ describe("section", () => {
     expect(parsed.sections[7].title).toBe("Chorus");
     expect(parsed.sections[8].title).toBe("Chorus");
     expect(parsed.sections[9].title).toBe("Refrain");
-    expect(parsed.sections[10].title).toBe("Outro");
+    expect(parsed.sections[10].title).toBe("Chorus");
+    expect(parsed.sections[11].title).toBe("Outro");
   })
 
   test("set link", async () => {
@@ -77,17 +78,18 @@ describe("section", () => {
 
     const parsed = await parse(markdown);
 
-    expect(parsed.sections[0].link).toBe(null);
-    expect(parsed.sections[1].link).toBe(null);
+    expect(parsed.sections[0].link).toBeUndefined();
+    expect(parsed.sections[1].link).toBeUndefined();
     expect(parsed.sections[2].link).toBe("chorus");
-    expect(parsed.sections[3].link).toBe(null);
+    expect(parsed.sections[3].link).toBeUndefined();
     expect(parsed.sections[4].link).toBe("chorus");
-    expect(parsed.sections[5].link).toBe(null);
-    expect(parsed.sections[6].link).toBe(null);
+    expect(parsed.sections[5].link).toBeUndefined();
+    expect(parsed.sections[6].link).toBeUndefined();
     expect(parsed.sections[7].link).toBe("chorus");
-    expect(parsed.sections[8].link).toBe(null);
-    expect(parsed.sections[9].link).toBe(null);
-    expect(parsed.sections[10].link).toBe(null);
+    expect(parsed.sections[8].link).toBeUndefined();
+    expect(parsed.sections[9].link).toBeUndefined();
+    expect(parsed.sections[10].link).toBe("chorus");
+    expect(parsed.sections[11].link).toBeUndefined();
   })
 
   test("no content", async () => {
@@ -97,7 +99,7 @@ describe("section", () => {
 
     expect(parsed.sections[0].lines).toEqual([]);
     expect(parsed.sections[6].lines).toEqual([]);
-    expect(parsed.sections[10].lines).toEqual([]);
+    expect(parsed.sections[11].lines).toEqual([]);
   })
 })
 
@@ -108,10 +110,10 @@ describe("line", () => {
     const parsed = await parse(markdown);
 
     expect(parsed.sections[1].lines).toEqual([
-      { id: expect.any(String), content: "verse lyric line 1" },
-      { id: expect.any(String), content: "verse lyric line 2" },
-      { id: expect.any(String), content: "verse lyric line 3" },
-      { id: expect.any(String), content: "verse lyric line 4" },
+      { id: expect.any(String), content: "verse 1 line 1" },
+      { id: expect.any(String), content: "verse 1 line 2" },
+      { id: expect.any(String), content: "verse 1 line 3" },
+      { id: expect.any(String), content: "verse 1 line 4" },
     ]);
   })
 
@@ -121,22 +123,22 @@ describe("line", () => {
     const parsed = await parse(markdown);
 
     expect(parsed.sections[5].lines).toEqual([
-      { id: expect.any(String), content: "bridge lyric line 1" },
-      { id: expect.any(String), content: "bridge lyric line 2" },
-      { id: expect.any(String), content: "bridge linked lyric line 3", link: 0 },
-      { id: expect.any(String), content: "bridge linked lyric line 4", link: 1 },
+      { id: expect.any(String), content: "bridge line 1" },
+      { id: expect.any(String), content: "bridge line 2" },
+      { id: expect.any(String), content: "bridge line 3 linked", link: 0 },
+      { id: expect.any(String), content: "bridge line 4 linked", link: 1 },
       { id: expect.any(String), content: "" },
-      { id: expect.any(String), content: "bridge lyric line a" },
-      { id: expect.any(String), content: "bridge lyric line b" },
-      { id: expect.any(String), content: "bridge linked lyric line 3", link: 0 },
-      { id: expect.any(String), content: "bridge linked lyric line 4", link: 1 },
+      { id: expect.any(String), content: "bridge line a" },
+      { id: expect.any(String), content: "bridge line b" },
+      { id: expect.any(String), content: "bridge line 3 linked", link: 0 },
+      { id: expect.any(String), content: "bridge line 4 linked", link: 1 },
     ]);
 
     expect(parsed.sections[9].lines).toEqual([
-      { id: expect.any(String), content: "refrain lyric line 1" },
-      { id: expect.any(String), content: "refrain lyric line 2" },
-      { id: expect.any(String), content: "refrain lyric line 3" },
-      { id: expect.any(String), content: "bridge linked lyric line 4", link: 1 },
+      { id: expect.any(String), content: "refrain line 1" },
+      { id: expect.any(String), content: "refrain line 2" },
+      { id: expect.any(String), content: "refrain line 3" },
+      { id: expect.any(String), content: "bridge line 4 linked", link: 1 },
     ]);
   })
 
@@ -146,17 +148,17 @@ describe("line", () => {
     const parsed = await parse(markdown);
 
     expect(parsed.sections[2].lines).toEqual([
-      { id: expect.any(String), content: "chorus linked lyric line 1" },
-      { id: expect.any(String), content: "chorus linked lyric line 2" },
-      { id: expect.any(String), content: "chorus linked lyric line 3" },
-      { id: expect.any(String), content: "chorus linked lyric line 4" },
+      { id: expect.any(String), content: "chorus line 1 linked" },
+      { id: expect.any(String), content: "chorus line 2 linked" },
+      { id: expect.any(String), content: "chorus line 3 linked" },
+      { id: expect.any(String), content: "chorus line 4 linked" },
     ]);
 
     expect(parsed.sections[8].lines).toEqual([
-      { id: expect.any(String), content: "chorus lyric line 1" },
-      { id: expect.any(String), content: "chorus lyric line 2" },
-      { id: expect.any(String), content: "chorus lyric line 3" },
-      { id: expect.any(String), content: "chorus linked lyric line 4", link: "chorus" },
+      { id: expect.any(String), content: "chorus line 1" },
+      { id: expect.any(String), content: "chorus line 2" },
+      { id: expect.any(String), content: "chorus line 3" },
+      { id: expect.any(String), content: "chorus line 4 linked", link: "chorus" },
     ]);
   })
 
@@ -166,10 +168,29 @@ describe("line", () => {
     const parsed = await parse(markdown);
 
     expect(parsed.sections[7].lines).toEqual([
-      { id: expect.any(String), content: "chorus linked lyric line 1" },
-      { id: expect.any(String), content: "chorus linked lyric line 2" },
-      { id: expect.any(String), content: "chorus linked lyric line 3" },
-      { id: expect.any(String), content: "chorus unlinked lyric line 4", link: null },
+      { id: expect.any(String), content: "chorus line 1 linked" },
+      { id: expect.any(String), content: "chorus line 2 linked" },
+      { id: expect.any(String), content: "chorus line 3 linked" },
+      { id: expect.any(String), content: "chorus line 4 unlinked", link: null },
     ]);
   })
+
+  test("line link in linked section", async () => {
+    const markdown = SONG_FIXTURES("full");
+
+    const parsed = await parse(markdown);
+
+    expect(parsed.sections[10].link).toBe("chorus");
+    expect(parsed.sections[10].lines).toEqual([
+      { id: expect.any(String), content: "chorus line 1 linked" },
+      { id: expect.any(String), content: "chorus line 2 linked" },
+      { id: expect.any(String), content: "chorus line 3 linked" },
+      { id: expect.any(String), content: "bridge line 4 linked", link: 1 },
+    ]);
+  })
+})
+
+describe.todo("edge cases", () => {
+  test.todo("invalid section link")
+  test.todo("invalid line link")
 })
