@@ -9,7 +9,13 @@ test("empty file", async () => {
 
   const parsed = await parse(markdown);
 
-  expect(parsed).toEqual({ frontmatter: "", sections: [] });
+  expect(parsed).toMatchInlineSnapshot(`
+    {
+      "frontmatter": "",
+      "sections": [],
+      "title": "",
+    }
+  `);
 })
 
 test("only frontmatter", async () => {
@@ -17,10 +23,14 @@ test("only frontmatter", async () => {
 
   const parsed = await parse(markdown);
 
-  expect(parsed).toEqual({
-    frontmatter: "title: Example Song\nalbum: Example Album",
-    sections: [],
-  });
+  expect(parsed).toMatchInlineSnapshot(`
+    {
+      "frontmatter": "title: Example Song
+    album: Example Album",
+      "sections": [],
+      "title": "",
+    }
+  `);
 })
 
 test("one section", async () => {
@@ -28,21 +38,42 @@ test("one section", async () => {
 
   const parsed = await parse(markdown);
 
-  expect(parsed).toEqual({
-    frontmatter: "title: Example Song\nalbum: Example Album",
-    sections: [
-      {
-        id: expect.any(String),
-        title: "Verse",
-        lines: [
-          { id: expect.any(String), content: "verse 1 line 1" },
-          { id: expect.any(String), content: "verse 1 line 2" },
-          { id: expect.any(String), content: "verse 1 line 3" },
-          { id: expect.any(String), content: "verse 1 line 4" },
-        ]
-      },
-    ],
-  });
+  expect(parsed).toMatchInlineSnapshot(`
+    {
+      "frontmatter": "title: Example Song
+    album: Example Album",
+      "sections": [
+        {
+          "id": "section 0",
+          "lines": [
+            {
+              "content": "verse 1 line 1",
+              "id": "section 0 line 0",
+              "link": undefined,
+            },
+            {
+              "content": "verse 1 line 2",
+              "id": "section 0 line 1",
+              "link": undefined,
+            },
+            {
+              "content": "verse 1 line 3",
+              "id": "section 0 line 2",
+              "link": undefined,
+            },
+            {
+              "content": "verse 1 line 4",
+              "id": "section 0 line 3",
+              "link": undefined,
+            },
+          ],
+          "link": undefined,
+          "title": "Verse",
+        },
+      ],
+      "title": "",
+    }
+  `);
 })
 
 test("full", async () => {

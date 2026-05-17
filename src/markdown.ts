@@ -13,6 +13,7 @@ export const parse = (markdown: string) => unified()
     const self: Processor<undefined, undefined, undefined, Root> = this;
 
     const song = {
+      title: "",
       frontmatter: "",
       sections: [] as Section[],
     };

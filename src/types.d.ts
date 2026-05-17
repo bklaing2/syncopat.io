@@ -6,6 +6,7 @@ export type Section = {
 };
 
 export type Song = {
+  title: string;
   frontmatter: string;
   sections: Section[];
 };

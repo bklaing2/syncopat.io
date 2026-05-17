@@ -291,5 +291,6 @@ album: Example Album",
       "title": "Outro",
     },
   ],
+  "title": "",
 }
 `;
