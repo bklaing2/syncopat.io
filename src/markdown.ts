@@ -27,15 +27,18 @@ export const parse = (markdown: string) => unified()
         }
 
         if (node.type === "heading" && node.depth === 1) {
-          if (currentSection) song.sections.push(currentSection);
+          if (currentSection) song.sections.push(currentSection)
+
+          const value = node.children
+            .filter((child) => "value" in child)
+            .map((child) => child.value)
+            .join("")
 
           currentSection = {
             id: song.sections.length.toString(),
-            title: node.children
-              .filter((child) => "value" in child)
-              .map((child) => child.value)
-              .join(""),
+            title: getContent(value),
             lines: [],
+            link: getLink(value)
           };
 
           return;
@@ -55,7 +58,6 @@ export const parse = (markdown: string) => unified()
               return lines.split("\n").map((line) => ({
                 id: crypto.randomUUID(),
                 content: line,
-                link: null,
               }))
             })
           );
@@ -69,3 +71,12 @@ export const parse = (markdown: string) => unified()
   })
   .process(markdown)
   .then((file) => file.result as Song);
+
+
+const LINK_REGEX = /^(?<title>.*?)(?:\s+%%🔗(?<link>.*?)%%)?$/;
+
+const getContent = (input: string) =>
+  input.match(LINK_REGEX)?.groups?.title ?? ""
+
+const getLink = (input: string) =>
+  input.match(LINK_REGEX)?.groups?.link

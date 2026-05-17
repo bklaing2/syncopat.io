@@ -1,11 +1,11 @@
 export type Section = {
   id: string;
-  type: string;
-  content: string;
+  title: string;
+  lines: { id: string, content: string, link?: string | number | null }[];
+  link?: string;
 };
 
 export type Song = {
-  fileHandle: FileSystemFileHandle;
   frontmatter: string;
   sections: Section[];
 };
