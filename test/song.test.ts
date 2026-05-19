@@ -14,6 +14,47 @@ test("rename", () => {
 })
 
 describe("section", () => {
+  describe("rename", () => {
+    test("middle", () => {
+      const updatedSong = songActions.renameSection(song, "2", "New Section Title");
+
+      expect(updatedSong.sections[0].title).toBe("Verse 1");
+      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
+      expect(updatedSong.sections[2].title).toBe("New Section Title");
+      expect(updatedSong.sections[3].title).toBe("Verse 2");
+      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
+      expect(updatedSong.sections[5].title).toBe("Chorus");
+      expect(updatedSong.sections[6].title).toBe("Bridge");
+      expect(updatedSong.sections[7].title).toBe("Chorus");
+    })
+
+    test("first", () => {
+      const updatedSong = songActions.renameSection(song, "0", "New Section Title");
+
+      expect(updatedSong.sections[0].title).toBe("New Section Title");
+      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
+      expect(updatedSong.sections[2].title).toBe("Chorus");
+      expect(updatedSong.sections[3].title).toBe("Verse 2");
+      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
+      expect(updatedSong.sections[5].title).toBe("Chorus");
+      expect(updatedSong.sections[6].title).toBe("Bridge");
+      expect(updatedSong.sections[7].title).toBe("Chorus");
+    })
+
+    test("last", () => {
+      const updatedSong = songActions.renameSection(song, "7", "New Section Title");
+
+      expect(updatedSong.sections[0].title).toBe("Verse 1");
+      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
+      expect(updatedSong.sections[2].title).toBe("Chorus");
+      expect(updatedSong.sections[3].title).toBe("Verse 2");
+      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
+      expect(updatedSong.sections[5].title).toBe("Chorus");
+      expect(updatedSong.sections[6].title).toBe("Bridge");
+      expect(updatedSong.sections[7].title).toBe("New Section Title");
+    })
+  })
+
   describe("insert", () => {
     test("in middle", () => {
       const updatedSong = songActions.insertSection(song, {
@@ -178,52 +219,25 @@ describe("section", () => {
 
   describe("update content (consider links)")
 
-  test("update link")
+  test("set link", () => {
+    // Add link
+    let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "verse");
 
+    expect(updatedSong.sections[0].link).toBe("verse");
 
-  describe("rename", () => {
-    test("middle", () => {
-      const updatedSong = songActions.renameSection(song, "2", "New Section Title");
+    // Replace link
+    updatedSong = songActions.setSectionLink(song, song.sections[0].id, "chorus");
 
-      expect(updatedSong.sections[0].title).toBe("Verse 1");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("New Section Title");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("Chorus");
-    })
+    expect(updatedSong.sections[0].link).toBe("chorus");
 
-    test("first", () => {
-      const updatedSong = songActions.renameSection(song, "0", "New Section Title");
+    // Remove link
+    updatedSong = songActions.setSectionLink(song, song.sections[0].id, undefined);
 
-      expect(updatedSong.sections[0].title).toBe("New Section Title");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("Chorus");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("Chorus");
-    })
-
-    test("last", () => {
-      const updatedSong = songActions.renameSection(song, "7", "New Section Title");
-
-      expect(updatedSong.sections[0].title).toBe("Verse 1");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("Chorus");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("New Section Title");
-    })
+    expect(updatedSong.sections[0].link).toBeUndefined();
   })
-
-
 })
+
+
 
 describe("line", () => {
   test("add line")

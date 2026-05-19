@@ -44,3 +44,11 @@ export function renameSection(song: Song, sectionId: Section["id"], newTitle: st
   }
 }
 
+export function setSectionLink(song: Song, sectionId: Section["id"], link: Section["link"]): Song {
+  return {
+    ...song,
+    sections: song.sections.map(s =>
+      s.id === sectionId ? { ...s, link: link } : s
+    )
+  }
+}
