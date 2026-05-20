@@ -223,17 +223,17 @@ describe("section", () => {
     // Add link
     let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "verse");
 
-    expect(updatedSong.sections[0].link).toBe("verse");
+    expect.soft(updatedSong.sections[0].link).toBe("verse");
 
     // Replace link
     updatedSong = songActions.setSectionLink(song, song.sections[0].id, "chorus");
 
-    expect(updatedSong.sections[0].link).toBe("chorus");
+    expect.soft(updatedSong.sections[0].link).toBe("chorus");
 
     // Remove link
     updatedSong = songActions.setSectionLink(song, song.sections[0].id, undefined);
 
-    expect(updatedSong.sections[0].link).toBeUndefined();
+    expect.soft(updatedSong.sections[0].link).toBeUndefined();
   })
 })
 
@@ -244,9 +244,170 @@ describe("line", () => {
   test("delete line")
   test.todo("reorder (consider links, and section links)")
 
-  test("update content (consider links)")
+  describe("update content", () => {
+    test("when no link set", () => {
+      const updatedSong = songActions.updateLineContent(song, song.sections[1].lines[1].id, "new content");
+
+      expect(updatedSong.sections[1].lines[0].content).toBe("prechorus line 1 linked");
+      expect(updatedSong.sections[1].lines[1].content).toBe("new content");
+      expect(updatedSong.sections[1].lines[2].content).toBe("prechorus line 3 linked");
+      expect(updatedSong.sections[1].lines[3].content).toBe("prechorus line 4 linked");
+    })
+    test("when only line link set", () => {
+      let updatedSong = songActions.updateLineContent(song, song.sections[6].lines[3].id, "new content");
+
+      expect(updatedSong.sections[6].lines[0].content).toBe("bridge line 1");
+      expect(updatedSong.sections[6].lines[1].content).toBe("bridge line 2");
+      expect(updatedSong.sections[6].lines[2].content).toBe("bridge line 3");
+      expect(updatedSong.sections[6].lines[3].content).toBe("new content");
+      expect(updatedSong.sections[6].lines[4].content).toBe("");
+      expect(updatedSong.sections[6].lines[5].content).toBe("bridge line a");
+      expect(updatedSong.sections[6].lines[6].content).toBe("bridge line b");
+      expect(updatedSong.sections[6].lines[7].content).toBe("bridge line c");
+      expect(updatedSong.sections[6].lines[8].content).toBe("new content");
+
+      updatedSong = songActions.updateLineContent(song, song.sections[6].lines[8].id, "new content (inverse)");
+
+      expect(updatedSong.sections[6].lines[0].content).toBe("bridge line 1");
+      expect(updatedSong.sections[6].lines[1].content).toBe("bridge line 2");
+      expect(updatedSong.sections[6].lines[2].content).toBe("bridge line 3");
+      expect(updatedSong.sections[6].lines[3].content).toBe("new content (inverse)");
+      expect(updatedSong.sections[6].lines[4].content).toBe("");
+      expect(updatedSong.sections[6].lines[5].content).toBe("bridge line a");
+      expect(updatedSong.sections[6].lines[6].content).toBe("bridge line b");
+      expect(updatedSong.sections[6].lines[7].content).toBe("bridge line c");
+      expect(updatedSong.sections[6].lines[8].content).toBe("new content (inverse)");
+
+      updatedSong = songActions.updateLineContent(song, song.sections[7].lines[0].id, "new content");
+
+      expect(updatedSong.sections[3].lines[0].content).toBe("new content");
+      expect(updatedSong.sections[3].lines[1].content).toBe("verse 2 line 2");
+      expect(updatedSong.sections[3].lines[2].content).toBe("verse 2 line 3");
+      expect(updatedSong.sections[3].lines[3].content).toBe("verse 2 line 4");
+
+      expect(updatedSong.sections[7].lines[0].content).toBe("new content");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
+    })
+    test("when only section link set", () => {
+      let updatedSong = songActions.updateLineContent(song, song.sections[2].lines[0].id, "new content");
+
+      expect(updatedSong.sections[2].lines[0].content).toBe("new content");
+      expect(updatedSong.sections[2].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[2].lines[2].content).toBe("chorus line 3 linked");
+      expect(updatedSong.sections[2].lines[3].content).toBe("chorus line 4 linked");
+
+      expect(updatedSong.sections[5].lines[0].content).toBe("new content");
+      expect(updatedSong.sections[5].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[5].lines[2].content).toBe("chorus line 3 linked");
+      expect(updatedSong.sections[5].lines[3].content).toBe("chorus line 4 linked");
+
+      expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
+
+
+      updatedSong = songActions.updateLineContent(song, song.sections[2].lines[3].id, "new content");
+
+      expect(updatedSong.sections[2].lines[0].content).toBe("chorus line 1 linked");
+      expect(updatedSong.sections[2].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[2].lines[2].content).toBe("chorus line 3 linked");
+      expect(updatedSong.sections[2].lines[3].content).toBe("new content");
+
+      expect(updatedSong.sections[5].lines[0].content).toBe("chorus line 1 linked");
+      expect(updatedSong.sections[5].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[5].lines[2].content).toBe("chorus line 3 linked");
+      expect(updatedSong.sections[5].lines[3].content).toBe("new content");
+
+      expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[3].content).toBe("new content");
+    })
+    test("when section link set and line link set")
+  })
+
   test("update link")
 
+  test("get all lines", () => {
+    expect(songActions.getAllLines(song)).toMatchSnapshot()
+  })
+
+  test("get linked lines", () => {
+    expect.soft(songActions.getLinkedLines(song, undefined)).toMatchSnapshot();
+    expect.soft(songActions.getLinkedLines(song, null)).toMatchInlineSnapshot(`
+      [
+        {
+          "content": "prechorus 2 line 1",
+          "id": "4-1",
+          "link": null,
+        },
+      ]
+    `);
+    expect.soft(songActions.getLinkedLines(song, "chorus1")).toMatchInlineSnapshot(`
+      [
+        {
+          "content": "chorus line 1 linked",
+          "id": "2-1",
+          "link": "chorus1",
+        },
+        {
+          "content": "chorus line 1 linked",
+          "id": "5-1",
+          "link": "chorus1",
+        },
+      ]
+    `)
+    expect.soft(songActions.getLinkedLines(song, "chorus4")).toMatchInlineSnapshot(`
+      [
+        {
+          "content": "chorus line 4 linked",
+          "id": "2-4",
+          "link": "chorus4",
+        },
+        {
+          "content": "chorus line 4 linked",
+          "id": "5-4",
+          "link": "chorus4",
+        },
+        {
+          "content": "chorus line 4 linked",
+          "id": "7-4",
+          "link": "chorus4",
+        },
+      ]
+    `);
+    expect.soft(songActions.getLinkedLines(song, 0)).toMatchInlineSnapshot(`
+      [
+        {
+          "content": "verse/chorus line linked",
+          "id": "3-1",
+          "link": 0,
+        },
+        {
+          "content": "verse/chorus line linked",
+          "id": "7-1",
+          "link": 0,
+        },
+      ]
+    `);
+    expect.soft(songActions.getLinkedLines(song, 1)).toMatchInlineSnapshot(`
+      [
+        {
+          "content": "bridge line linked",
+          "id": "6-4",
+          "link": 1,
+        },
+        {
+          "content": "bridge line linked",
+          "id": "6-9",
+          "link": 1,
+        },
+      ]
+    `);
+  })
 })
 
 

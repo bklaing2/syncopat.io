@@ -1,0 +1,276 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`line > get all lines 1`] = `
+[
+  {
+    "content": "verse 1 line 1",
+    "id": "0-1",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 2",
+    "id": "0-2",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 3",
+    "id": "0-3",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 4",
+    "id": "0-4",
+    "link": undefined,
+  },
+  {
+    "content": "prechorus line 1 linked",
+    "id": "1-1",
+    "link": "prechorus1",
+  },
+  {
+    "content": "prechorus line 2 linked",
+    "id": "1-2",
+    "link": "prechorus2",
+  },
+  {
+    "content": "prechorus line 3 linked",
+    "id": "1-3",
+    "link": "prechorus3",
+  },
+  {
+    "content": "prechorus line 4 linked",
+    "id": "1-4",
+    "link": "prechorus4",
+  },
+  {
+    "content": "chorus line 1 linked",
+    "id": "2-1",
+    "link": "chorus1",
+  },
+  {
+    "content": "chorus line 2 linked",
+    "id": "2-2",
+    "link": "chorus2",
+  },
+  {
+    "content": "chorus line 3 linked",
+    "id": "2-3",
+    "link": "chorus3",
+  },
+  {
+    "content": "chorus line 4 linked",
+    "id": "2-4",
+    "link": "chorus4",
+  },
+  {
+    "content": "verse/chorus line linked",
+    "id": "3-1",
+    "link": 0,
+  },
+  {
+    "content": "verse 2 line 2",
+    "id": "3-2",
+    "link": undefined,
+  },
+  {
+    "content": "verse 2 line 3",
+    "id": "3-3",
+    "link": undefined,
+  },
+  {
+    "content": "verse 2 line 4",
+    "id": "3-4",
+    "link": undefined,
+  },
+  {
+    "content": "prechorus 2 line 1",
+    "id": "4-1",
+    "link": null,
+  },
+  {
+    "content": "prechorus line 2 linked",
+    "id": "4-2",
+    "link": "prechorus2",
+  },
+  {
+    "content": "prechorus line 3 linked",
+    "id": "4-3",
+    "link": "prechorus3",
+  },
+  {
+    "content": "prechorus line 4 linked",
+    "id": "4-4",
+    "link": "prechorus4",
+  },
+  {
+    "content": "chorus line 1 linked",
+    "id": "5-1",
+    "link": "chorus1",
+  },
+  {
+    "content": "chorus line 2 linked",
+    "id": "5-2",
+    "link": "chorus2",
+  },
+  {
+    "content": "chorus line 3 linked",
+    "id": "5-3",
+    "link": "chorus3",
+  },
+  {
+    "content": "chorus line 4 linked",
+    "id": "5-4",
+    "link": "chorus4",
+  },
+  {
+    "content": "bridge line 1",
+    "id": "6-1",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line 2",
+    "id": "6-2",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line 3",
+    "id": "6-3",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line linked",
+    "id": "6-4",
+    "link": 1,
+  },
+  {
+    "content": "",
+    "id": "6-5",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line a",
+    "id": "6-6",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line b",
+    "id": "6-7",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line c",
+    "id": "6-8",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line linked",
+    "id": "6-9",
+    "link": 1,
+  },
+  {
+    "content": "verse/chorus line linked",
+    "id": "7-1",
+    "link": 0,
+  },
+  {
+    "content": "chorus line 2",
+    "id": "7-2",
+    "link": undefined,
+  },
+  {
+    "content": "chorus line 3",
+    "id": "7-3",
+    "link": undefined,
+  },
+  {
+    "content": "chorus line 4 linked",
+    "id": "7-4",
+    "link": "chorus4",
+  },
+]
+`;
+
+exports[`line > get linked lines 1`] = `
+[
+  {
+    "content": "verse 1 line 1",
+    "id": "0-1",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 2",
+    "id": "0-2",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 3",
+    "id": "0-3",
+    "link": undefined,
+  },
+  {
+    "content": "verse 1 line 4",
+    "id": "0-4",
+    "link": undefined,
+  },
+  {
+    "content": "verse 2 line 2",
+    "id": "3-2",
+    "link": undefined,
+  },
+  {
+    "content": "verse 2 line 3",
+    "id": "3-3",
+    "link": undefined,
+  },
+  {
+    "content": "verse 2 line 4",
+    "id": "3-4",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line 1",
+    "id": "6-1",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line 2",
+    "id": "6-2",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line 3",
+    "id": "6-3",
+    "link": undefined,
+  },
+  {
+    "content": "",
+    "id": "6-5",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line a",
+    "id": "6-6",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line b",
+    "id": "6-7",
+    "link": undefined,
+  },
+  {
+    "content": "bridge line c",
+    "id": "6-8",
+    "link": undefined,
+  },
+  {
+    "content": "chorus line 2",
+    "id": "7-2",
+    "link": undefined,
+  },
+  {
+    "content": "chorus line 3",
+    "id": "7-3",
+    "link": undefined,
+  },
+]
+`;

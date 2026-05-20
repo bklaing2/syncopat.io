@@ -1,15 +1,21 @@
-export type Section = {
-  id: string;
-  title: string;
-  lines: { id: string, content: string, link?: string | number | null }[];
-  link?: string;
-};
-
 export type Song = {
   title: string;
   frontmatter: string;
   sections: Section[];
 };
+
+export type Section = {
+  id: string;
+  title: string;
+  lines: Line[];
+  link?: string;
+};
+
+export type Line = {
+  id: string;
+  content: string;
+  link?: string | number | null;
+}
 
 // Register the result type.
 declare module "unified" {
