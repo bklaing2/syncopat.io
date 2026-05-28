@@ -173,12 +173,12 @@ exports[`line > get all lines 1`] = `
     "link": 0,
   },
   {
-    "content": "chorus line 2",
+    "content": "chorus line 2 linked",
     "id": "7-2",
     "link": undefined,
   },
   {
-    "content": "chorus line 3",
+    "content": "chorus line 3 linked",
     "id": "7-3",
     "link": undefined,
   },
@@ -263,12 +263,12 @@ exports[`line > get linked lines 1`] = `
     "link": undefined,
   },
   {
-    "content": "chorus line 2",
+    "content": "chorus line 2 linked",
     "id": "7-2",
     "link": undefined,
   },
   {
-    "content": "chorus line 3",
+    "content": "chorus line 3 linked",
     "id": "7-3",
     "link": undefined,
   },

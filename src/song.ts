@@ -45,6 +45,25 @@ export function renameSection(song: Song, sectionId: Section["id"], newTitle: st
 }
 
 export function setSectionLink(song: Song, sectionId: Section["id"], link: Section["link"]): Song {
+  const linkExists = link !== null && link !== undefined && song.sections.some(s => s.link === link);
+
+  if (linkExists) {
+    // Verify the new content matches existing linked content
+    const section = song.sections.find(s => s.id === sectionId);
+    if (!section) throw new Error("Section not found");
+
+    section.lines.forEach((l, i) => {
+      // skip this line -- it's link overrides the section link
+      if (l.link !== undefined && l.link !== link) return
+
+      const linkedLinesContent = getLinkedLines(song, link + (i + 1)).map(l => l.content);
+      const lineSet = new Set([l.content, ...linkedLinesContent])
+
+      if (lineSet.size > 1)
+        throw new Error("Unable to set link: new content conflicts with existing linked content");
+    })
+  }
+
   return {
     ...song,
     sections: song.sections.map(s =>

@@ -68,8 +68,8 @@ const buildSong = (): Song => ({
     {
       id: "7", title: "Chorus", lines: [
         { id: "7-1", content: "verse/chorus line linked", link: 0 },
-        { id: "7-2", content: "chorus line 2" },
-        { id: "7-3", content: "chorus line 3" },
+        { id: "7-2", content: "chorus line 2 linked" },
+        { id: "7-3", content: "chorus line 3 linked" },
         { id: "7-4", content: "chorus line 4 linked", link: "chorus" },
       ]
     },

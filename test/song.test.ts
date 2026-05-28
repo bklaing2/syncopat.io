@@ -219,21 +219,48 @@ describe("section", () => {
 
   describe("update content (consider links)")
 
-  test("set link", () => {
-    // Add link
-    let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "verse");
+  describe("link", () => {
+    test("set", () => {
+      // Add link
+      let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "verse");
 
-    expect.soft(updatedSong.sections[0].link).toBe("verse");
+      expect.soft(updatedSong.sections[0].link).toBe("verse");
 
-    // Replace link
-    updatedSong = songActions.setSectionLink(song, song.sections[0].id, "chorus");
+      // Replace link
+      updatedSong = songActions.setSectionLink(song, song.sections[0].id, "new link");
 
-    expect.soft(updatedSong.sections[0].link).toBe("chorus");
+      expect.soft(updatedSong.sections[0].link).toBe("new link");
 
-    // Remove link
-    updatedSong = songActions.setSectionLink(song, song.sections[0].id, undefined);
+      // Remove link
+      updatedSong = songActions.setSectionLink(song, song.sections[0].id, undefined);
 
-    expect.soft(updatedSong.sections[0].link).toBeUndefined();
+      expect.soft(updatedSong.sections[0].link).toBeUndefined();
+    })
+
+    test("assign section to existing link", () => {
+      let updatedSong = songActions.setSectionLink(song, song.sections[5].id, undefined);
+      updatedSong = songActions.setSectionLink(song, song.sections[5].id, "chorus");
+
+      expect(updatedSong.sections[5].link).toBe("chorus");
+    })
+
+    test("throws error when attempting to assign existing link to a section with conflicting content", () => {
+      const setLink = () => songActions.setSectionLink(song, song.sections[0].id, "chorus");
+
+      expect(setLink).toThrow();
+    })
+
+    test("doesn't throw error when attempting to assign existing link when the conflicting line(s) have line links", () => {
+      // Test section, line, and null links
+      let updatedSong = songActions.setSectionLink(song, song.sections[7].id, "chorus");
+
+      expect.soft(updatedSong.sections[7].link).toBe("chorus");
+
+      updatedSong = songActions.setSectionLink(song, song.sections[4].id, undefined);
+      updatedSong = songActions.setSectionLink(song, song.sections[4].id, "prechorus");
+
+      expect.soft(updatedSong.sections[4].link).toBe("prechorus");
+    })
   })
 })
 
@@ -286,8 +313,8 @@ describe("line", () => {
       expect(updatedSong.sections[3].lines[3].content).toBe("verse 2 line 4");
 
       expect(updatedSong.sections[7].lines[0].content).toBe("new content");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
       expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
     })
     test("when only section link set", () => {
@@ -304,8 +331,8 @@ describe("line", () => {
       expect(updatedSong.sections[5].lines[3].content).toBe("chorus line 4 linked");
 
       expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
       expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
 
 
@@ -322,8 +349,8 @@ describe("line", () => {
       expect(updatedSong.sections[5].lines[3].content).toBe("new content");
 
       expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3");
+      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
+      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
       expect(updatedSong.sections[7].lines[3].content).toBe("new content");
     })
     test("when section link set and line link set")
