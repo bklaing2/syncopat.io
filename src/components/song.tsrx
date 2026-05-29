@@ -1,6 +1,6 @@
 import { saveSong } from '#/fs';
-import { updateLineContent } from "#/song";
-import type { Song as SongType } from '#/types';
+import { setSectionLink, updateLineContent } from "#/song";
+import type { Section, Song as SongType } from '#/types';
 import { createMemo, type Setter } from "solid-js";
 
 export component Song(props: { song: SongType, setSong: Setter<SongType | null> }) {
@@ -28,8 +28,8 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
     selection.addRange(range);
   }
 
-  <div contenteditable onInput={handleLineUpdate} class="grid grid-cols-[1fr_max-content] auto-rows-auto">
-    <h1 contenteditable={false} class="text-2xl">{song.title}</h1>
+  <div contenteditable onInput={handleLineUpdate} class="grid grid-cols-[min-content_1fr_max-content] auto-rows-auto">
+    <h1 contenteditable={false} class="col-span-2 text-2xl">{song.title}</h1>
     <button contenteditable={false} class="mb-8" onClick={() => saveSong(song)}>"Save"</button>
 
     const sectionIds = createMemo(() => song.sections.map(s => s.id))
@@ -46,17 +46,27 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
         { equals: (a, b) => a.join(",") === b.join(",") }
       )
 
-      <h2 contenteditable={false} class="text-xl text-gray-600">{title()}</h2>
-      <button contenteditable={false}>
+      const toggleSectionLink = () => {
+        let newLink: Section["link"] = link() ? undefined : section().title.toLowerCase().replace(/\s+/g, "-")
+
+        try {
+          setSong(setSectionLink(song, sectionId, newLink))
+        } catch (e) {
+          alert(e instanceof Error ? e.message : "Unable to link section")
+        }
+      }
+
+      <button onClick={toggleSectionLink} contenteditable={false} title={link()}>
         if (link()) "⛓️‍💥"
         else "🔗"
       </button>
+      <h2 contenteditable={false} class="col-span-2 text-xl text-gray-600">{title()}</h2>
 
       for (const lineId of lineIds()) {
         const line = createMemo(() => song.sections.flatMap(s => s.lines).find(l => l.id === lineId))
         if (!line()) throw new Error("Line not found")
 
-        <span id={lineId} class="col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
+        <span id={lineId} class="col-start-2 col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
           {line().content}
         </span>
       }
