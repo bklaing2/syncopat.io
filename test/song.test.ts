@@ -1,6 +1,6 @@
+import { beforeEach, describe, expect, test } from "vitest"
 import type { Song } from "#/types";
 import BUILD_SONG from "./fixtures/song"
-import { beforeEach, describe, expect, test } from "vitest"
 import * as songActions from "../src/song"
 
 let song: Song;
@@ -9,261 +9,205 @@ beforeEach(() => song = BUILD_SONG())
 
 test("rename", () => {
   const updatedSong = songActions.rename(song, "New Title");
-
   expect(updatedSong.title).toBe("New Title");
 })
 
 describe("section", () => {
-  describe("rename", () => {
-    test("middle", () => {
-      const updatedSong = songActions.renameSection(song, "2", "New Section Title");
+  test("rename", () => {
+    // Middle
+    let updatedSong = songActions.renameSection(song, song.sections[2].id, "New Section Title");
+    expect.soft(updatedSong.sections[2].title).toBe("New Section Title");
 
-      expect(updatedSong.sections[0].title).toBe("Verse 1");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("New Section Title");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("Chorus");
-    })
+    // First
+    updatedSong = songActions.renameSection(song, song.sections[0].id, "New Section Title");
+    expect.soft(updatedSong.sections[0].title).toBe("New Section Title");
 
-    test("first", () => {
-      const updatedSong = songActions.renameSection(song, "0", "New Section Title");
-
-      expect(updatedSong.sections[0].title).toBe("New Section Title");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("Chorus");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("Chorus");
-    })
-
-    test("last", () => {
-      const updatedSong = songActions.renameSection(song, "7", "New Section Title");
-
-      expect(updatedSong.sections[0].title).toBe("Verse 1");
-      expect(updatedSong.sections[1].title).toBe("Prechorus 1");
-      expect(updatedSong.sections[2].title).toBe("Chorus");
-      expect(updatedSong.sections[3].title).toBe("Verse 2");
-      expect(updatedSong.sections[4].title).toBe("Prechorus 2");
-      expect(updatedSong.sections[5].title).toBe("Chorus");
-      expect(updatedSong.sections[6].title).toBe("Bridge");
-      expect(updatedSong.sections[7].title).toBe("New Section Title");
-    })
+    // Last
+    updatedSong = songActions.renameSection(song, song.sections[11].id, "New Section Title");
+    expect.soft(updatedSong.sections[11].title).toBe("New Section Title");
   })
 
-  describe("insert", () => {
-    test("in middle", () => {
-      const updatedSong = songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      }, 2)
+  test("insert - in middle", () => {
+    const updatedSong = songActions.insertSection(song, {
+      title: "New Section",
+      lines: [],
+    }, song.sections[2].id)
 
-      expect(updatedSong.sections.length).toBe(9);
-      expect(updatedSong.sections[2]).toEqual({
-        id: expect.any(String),
-        title: "New Section",
-        lines: [],
-      })
-      expect(updatedSong.sections[0].id).toBe("0");
-      expect(updatedSong.sections[1].id).toBe("1");
-      expect(updatedSong.sections[2].id).toEqual(expect.any(String));
-      expect(updatedSong.sections[3].id).toBe("2");
-      expect(updatedSong.sections[4].id).toBe("3");
-      expect(updatedSong.sections[5].id).toBe("4");
-      expect(updatedSong.sections[6].id).toBe("5");
-      expect(updatedSong.sections[7].id).toBe("6");
-      expect(updatedSong.sections[8].id).toBe("7");
-    })
-    test("at beginning", () => {
-      const updatedSong = songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      }, 0)
-
-      expect(updatedSong.sections.length).toBe(9);
-      expect(updatedSong.sections[0]).toEqual({
-        id: expect.any(String),
-        title: "New Section",
-        lines: [],
-      })
-      expect(updatedSong.sections[0].id).toEqual(expect.any(String));
-      expect(updatedSong.sections[1].id).toBe("0");
-      expect(updatedSong.sections[2].id).toBe("1");
-      expect(updatedSong.sections[3].id).toBe("2");
-      expect(updatedSong.sections[4].id).toBe("3");
-      expect(updatedSong.sections[5].id).toBe("4");
-      expect(updatedSong.sections[6].id).toBe("5");
-      expect(updatedSong.sections[7].id).toBe("6");
-      expect(updatedSong.sections[8].id).toBe("7");
-    })
-    test("at end", () => {
-      const updatedSong = songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      }, 8)
-
-      expect(updatedSong.sections.length).toBe(9);
-      expect(updatedSong.sections[8]).toEqual({
-        id: expect.any(String),
-        title: "New Section",
-        lines: [],
-      })
-      expect(updatedSong.sections[0].id).toBe("0");
-      expect(updatedSong.sections[1].id).toBe("1");
-      expect(updatedSong.sections[2].id).toBe("2");
-      expect(updatedSong.sections[3].id).toBe("3");
-      expect(updatedSong.sections[4].id).toBe("4");
-      expect(updatedSong.sections[5].id).toBe("5");
-      expect(updatedSong.sections[6].id).toBe("6");
-      expect(updatedSong.sections[7].id).toBe("7");
-      expect(updatedSong.sections[8].id).toEqual(expect.any(String));
-    })
-    test("without setting position appends to end", () => {
-      const updatedSong = songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      })
-
-      expect(updatedSong.sections.length).toBe(9);
-      expect(updatedSong.sections[8]).toEqual({
-        id: expect.any(String),
-        title: "New Section",
-        lines: [],
-      })
-      expect(updatedSong.sections[0].id).toBe("0");
-      expect(updatedSong.sections[1].id).toBe("1");
-      expect(updatedSong.sections[2].id).toBe("2");
-      expect(updatedSong.sections[3].id).toBe("3");
-      expect(updatedSong.sections[4].id).toBe("4");
-      expect(updatedSong.sections[5].id).toBe("5");
-      expect(updatedSong.sections[6].id).toBe("6");
-      expect(updatedSong.sections[7].id).toBe("7");
-      expect(updatedSong.sections[8].id).toEqual(expect.any(String));
-    })
-    test("throws error when position is invalid", () => {
-      const negativePosition = () => songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      }, -1)
-
-      const outOfBoundsPosition = () => songActions.insertSection(song, {
-        title: "New Section",
-        lines: [],
-      }, 9)
-
-      expect(negativePosition).toThrow();
-      expect(outOfBoundsPosition).toThrow();
+    expect(updatedSong.sections.length).toBe(song.sections.length + 1);
+    expect(updatedSong.sections[2]).toEqual({
+      id: expect.any(String),
+      title: "New Section",
+      lines: [],
     })
   })
+  test("insert - at beginning", () => {
+    const updatedSong = songActions.insertSection(song, {
+      title: "New Section",
+      lines: [],
+    }, song.sections[0].id)
 
-  describe("remove", () => {
-    test("in middle", () => {
-      const updatedSong = songActions.removeSection(song, song.sections[2].id)
-
-      expect(updatedSong.sections.length).toBe(7);
-      expect(updatedSong.sections[0].id).toBe("0");
-      expect(updatedSong.sections[1].id).toBe("1");
-      expect(updatedSong.sections[2].id).toBe("3");
-      expect(updatedSong.sections[3].id).toBe("4");
-      expect(updatedSong.sections[4].id).toBe("5");
-      expect(updatedSong.sections[5].id).toBe("6");
-      expect(updatedSong.sections[6].id).toBe("7");
+    expect(updatedSong.sections.length).toBe(song.sections.length + 1);
+    expect(updatedSong.sections[0]).toEqual({
+      id: expect.any(String),
+      title: "New Section",
+      lines: [],
+    })
+  })
+  test("insert - at end", () => {
+    const updatedSong = songActions.insertSection(song, {
+      title: "New Section",
+      lines: [],
     })
 
-    test("first", () => {
-      const updatedSong = songActions.removeSection(song, song.sections[0].id)
-
-      expect(updatedSong.sections.length).toBe(7);
-      expect(updatedSong.sections[0].id).toBe("1");
-      expect(updatedSong.sections[1].id).toBe("2");
-      expect(updatedSong.sections[2].id).toBe("3");
-      expect(updatedSong.sections[3].id).toBe("4");
-      expect(updatedSong.sections[4].id).toBe("5");
-      expect(updatedSong.sections[5].id).toBe("6");
-      expect(updatedSong.sections[6].id).toBe("7");
+    expect(updatedSong.sections.length).toBe(song.sections.length + 1);
+    expect(updatedSong.sections[12]).toEqual({
+      id: expect.any(String),
+      title: "New Section",
+      lines: [],
     })
+  })
+  test("insert - throws error when before id is invalid", () => {
+    const nonExistentId = () => songActions.insertSection(song, {
+      title: "New Section",
+      lines: [],
+    }, "non-existent id")
 
-    test("last", () => {
-      const updatedSong = songActions.removeSection(song, song.sections[7].id)
+    expect(nonExistentId).toThrow();
+  })
 
-      expect(updatedSong.sections.length).toBe(7);
-      expect(updatedSong.sections[0].id).toBe("0");
-      expect(updatedSong.sections[1].id).toBe("1");
-      expect(updatedSong.sections[2].id).toBe("2");
-      expect(updatedSong.sections[3].id).toBe("3");
-      expect(updatedSong.sections[4].id).toBe("4");
-      expect(updatedSong.sections[5].id).toBe("5");
-      expect(updatedSong.sections[6].id).toBe("6");
-    })
+  test("remove", () => {
+    // Middle
+    let updatedSong = songActions.removeSection(song, song.sections[2].id)
+    expect.soft(updatedSong.sections.length).toBe(song.sections.length - 1);
 
-    test("throws error when given non-existent section", () => {
-      const noSection = () => songActions.removeSection(song, "new section")
+    // First
+    updatedSong = songActions.removeSection(song, song.sections[0].id)
+    expect.soft(updatedSong.sections.length).toBe(song.sections.length - 1);
 
-      expect(noSection).toThrow();
-    })
+    // Last
+    updatedSong = songActions.removeSection(song, song.sections[song.sections.length - 1].id)
+    expect.soft(updatedSong.sections.length).toBe(song.sections.length - 1);
+  })
 
-    test("throws error when multiple sections have the same ID", () => {
-      song.sections[0].id = "duplicate id"
-      song.sections[1].id = "duplicate id"
-      const manySections = () => songActions.removeSection(song, "duplicate id")
+  test("remove - throws error when given non-existent section", () => {
+    const noSection = () => songActions.removeSection(song, "new section")
 
-      expect(manySections).toThrow();
-    })
+    expect.soft(noSection).toThrow();
+  })
+
+  test("remove - throws error when multiple sections have the same ID", () => {
+    song.sections[0].id = "duplicate id"
+    song.sections[1].id = "duplicate id"
+    const manySections = () => songActions.removeSection(song, "duplicate id")
+
+    expect(manySections).toThrow();
   })
 
   test.todo("reorder (consider links)")
 
   describe("update content (consider links)")
 
-  describe("link", () => {
-    test("set", () => {
-      // Add link
-      let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "verse");
+  test("link - set", () => {
+    // Add link
+    let updatedSong = songActions.setSectionLink(song, song.sections[0].id, "new link");
 
-      expect.soft(updatedSong.sections[0].link).toBe("verse");
+    expect(updatedSong.sections[0]).toHaveProperty("link", "new link");
+    expect(updatedSong.sections[0]).toHaveProperty("overrides", []);
+    expect(updatedSong.sections[0]).not.toHaveProperty("lines");
 
-      // Replace link
-      updatedSong = songActions.setSectionLink(song, song.sections[0].id, "new link");
+    expect(updatedSong.sectionLinks["new link"]).toEqual([])
 
-      expect.soft(updatedSong.sections[0].link).toBe("new link");
+    // Replace link
+    updatedSong = songActions.setSectionLink(updatedSong, updatedSong.sections[0].id, "replaced link");
 
-      // Remove link
-      updatedSong = songActions.setSectionLink(song, song.sections[0].id, undefined);
+    expect(updatedSong.sections[0]).toHaveProperty("link", "replaced link");
+    expect(updatedSong.sections[0]).toHaveProperty("overrides", []);
+    expect(updatedSong.sections[0]).not.toHaveProperty("lines");
 
-      expect.soft(updatedSong.sections[0].link).toBeUndefined();
-    })
+    expect(updatedSong.sectionLinks["new link"]).toBeUndefined()
+    expect(updatedSong.sectionLinks["replaced link"]).toEqual([])
 
-    test("assign section to existing link", () => {
-      let updatedSong = songActions.setSectionLink(song, song.sections[5].id, undefined);
-      updatedSong = songActions.setSectionLink(song, song.sections[5].id, "chorus");
+    // Replace link with same link
+    updatedSong = songActions.setSectionLink(updatedSong, updatedSong.sections[0].id, "replaced link");
 
-      expect(updatedSong.sections[5].link).toBe("chorus");
-    })
+    expect(updatedSong.sections[0]).toHaveProperty("link", "replaced link");
+    expect(updatedSong.sections[0]).toHaveProperty("overrides", []);
+    expect(updatedSong.sections[0]).not.toHaveProperty("lines");
 
-    test("throws error when attempting to assign existing link to a section with conflicting content", () => {
-      const setLink = () => songActions.setSectionLink(song, song.sections[0].id, "chorus");
+    expect(updatedSong.sectionLinks["replaced link"]).toEqual([])
 
-      expect(setLink).toThrow();
-    })
+    // Remove link
+    updatedSong = songActions.setSectionLink(updatedSong, updatedSong.sections[0].id, null);
 
-    test("doesn't throw error when attempting to assign existing link when the conflicting line(s) have line links", () => {
-      // Test section, line, and null links
-      let updatedSong = songActions.setSectionLink(song, song.sections[7].id, "chorus");
+    expect(updatedSong.sections[0]).not.toHaveProperty("link");
+    expect(updatedSong.sections[0]).not.toHaveProperty("overrides");
+    expect(updatedSong.sections[0]).toHaveProperty("lines");
 
-      expect.soft(updatedSong.sections[7].link).toBe("chorus");
+    expect(updatedSong.sectionLinks["new link"]).toBeUndefined()
+    expect(updatedSong.sectionLinks["replaced link"]).toBeUndefined()
+  })
 
-      updatedSong = songActions.setSectionLink(song, song.sections[4].id, undefined);
-      updatedSong = songActions.setSectionLink(song, song.sections[4].id, "prechorus");
+  test("link - assign section to existing section link", () => {
+    const updatedSong = songActions.setSectionLink(song, song.sections[6].id, "section link 1");
 
-      expect.soft(updatedSong.sections[4].link).toBe("prechorus");
-    })
+    expect(updatedSong.sections[6]).toHaveProperty("link", "section link 1");
+    expect(updatedSong.sections[6]).toHaveProperty("overrides", []);
+    expect(updatedSong.sections[6]).not.toHaveProperty("lines");
+  })
+
+  test("link - assign section with line link to existing section link", () => {
+    // Test section, line, and null links
+    const updatedSong = songActions.setSectionLink(song, song.sections[7].id, "section link 1");
+
+    expect(updatedSong.sections[7]).toHaveProperty("link", "section link 1");
+    expect(updatedSong.sections[7]).toHaveProperty("overrides[0]", { line: 2, with: 0 });
+    expect(updatedSong.sections[7]).not.toHaveProperty("lines");
+  })
+
+  test("link - create overrides when assigning existing link to a section with conflicting content", () => {
+    const updatedSong = songActions.setSectionLink(song, song.sections[8].id, "section link 1");
+    expect(updatedSong.sections[8]).toHaveProperty("link", "section link 1");
+    expect(updatedSong.sections[8]).toHaveProperty("overrides[0]", { line: 1, with: "conflicting line 6" });
+    expect(updatedSong.sections[8]).not.toHaveProperty("lines");
+  })
+
+  test("get line", () => {
+    let line = songActions.getSectionLine(song, song.sections[6].id, 2);
+    expect.soft(line).toEqual("line 7");
+
+    // With section link and no overrides"
+    line = songActions.getSectionLine(song, song.sections[2].id, 2);
+    expect.soft(line).toEqual("line 7");
+
+    // With section link and overrides
+    line = songActions.getSectionLine(song, song.sections[5].id, 0);
+    expect.soft(line).toEqual("overridden line 5");
+
+    line = songActions.getSectionLine(song, song.sections[5].id, 1);
+    expect.soft(line).toEqual("linked line 2");
+
+    // With line links"
+    line = songActions.getSectionLine(song, song.sections[11].id, 3);
+    expect.soft(line).toEqual("linked line 2");
+  })
+
+  test("get lines", () => {
+    let lines = songActions.getSectionLines(song, song.sections[6].id);
+    expect.soft(lines).toEqual(["line 5", "line 6", "line 7", "line 8"]);
+
+    // With section link and no overrides"
+    lines = songActions.getSectionLines(song, song.sections[2].id);
+    expect.soft(lines).toEqual(["line 5", "line 6", "line 7", "line 8"]);
+
+    // With section link and overrides
+    lines = songActions.getSectionLines(song, song.sections[5].id);
+    expect.soft(lines).toEqual(["overridden line 5", "linked line 2", "line 7", "line 8"]);
+
+    // With line links"
+    lines = songActions.getSectionLines(song, song.sections[11].id);
+    expect.soft(lines).toEqual(["line 13", "line 14", "line 15", "linked line 2", "", "line 17", "line 18", "line 19", "linked line 2"]);
   })
 })
-
 
 
 describe("line", () => {
@@ -271,170 +215,31 @@ describe("line", () => {
   test("delete line")
   test.todo("reorder (consider links, and section links)")
 
-  describe("update content", () => {
-    test("when no link set", () => {
-      const updatedSong = songActions.updateLineContent(song, song.sections[1].lines[1].id, "new content");
+  test("update content - section line", () => {
+    const updatedSong = songActions.updateLine(song, song.sections[1].id, 1, "new content");
 
-      expect(updatedSong.sections[1].lines[0].content).toBe("prechorus line 1 linked");
-      expect(updatedSong.sections[1].lines[1].content).toBe("new content");
-      expect(updatedSong.sections[1].lines[2].content).toBe("prechorus line 3 linked");
-      expect(updatedSong.sections[1].lines[3].content).toBe("prechorus line 4 linked");
-    })
-    test("when only line link set", () => {
-      let updatedSong = songActions.updateLineContent(song, song.sections[6].lines[3].id, "new content");
-
-      expect(updatedSong.sections[6].lines[0].content).toBe("bridge line 1");
-      expect(updatedSong.sections[6].lines[1].content).toBe("bridge line 2");
-      expect(updatedSong.sections[6].lines[2].content).toBe("bridge line 3");
-      expect(updatedSong.sections[6].lines[3].content).toBe("new content");
-      expect(updatedSong.sections[6].lines[4].content).toBe("");
-      expect(updatedSong.sections[6].lines[5].content).toBe("bridge line a");
-      expect(updatedSong.sections[6].lines[6].content).toBe("bridge line b");
-      expect(updatedSong.sections[6].lines[7].content).toBe("bridge line c");
-      expect(updatedSong.sections[6].lines[8].content).toBe("new content");
-
-      updatedSong = songActions.updateLineContent(song, song.sections[6].lines[8].id, "new content (inverse)");
-
-      expect(updatedSong.sections[6].lines[0].content).toBe("bridge line 1");
-      expect(updatedSong.sections[6].lines[1].content).toBe("bridge line 2");
-      expect(updatedSong.sections[6].lines[2].content).toBe("bridge line 3");
-      expect(updatedSong.sections[6].lines[3].content).toBe("new content (inverse)");
-      expect(updatedSong.sections[6].lines[4].content).toBe("");
-      expect(updatedSong.sections[6].lines[5].content).toBe("bridge line a");
-      expect(updatedSong.sections[6].lines[6].content).toBe("bridge line b");
-      expect(updatedSong.sections[6].lines[7].content).toBe("bridge line c");
-      expect(updatedSong.sections[6].lines[8].content).toBe("new content (inverse)");
-
-      updatedSong = songActions.updateLineContent(song, song.sections[7].lines[0].id, "new content");
-
-      expect(updatedSong.sections[3].lines[0].content).toBe("new content");
-      expect(updatedSong.sections[3].lines[1].content).toBe("verse 2 line 2");
-      expect(updatedSong.sections[3].lines[2].content).toBe("verse 2 line 3");
-      expect(updatedSong.sections[3].lines[3].content).toBe("verse 2 line 4");
-
-      expect(updatedSong.sections[7].lines[0].content).toBe("new content");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
-    })
-    test("when only section link set", () => {
-      let updatedSong = songActions.updateLineContent(song, song.sections[2].lines[0].id, "new content");
-
-      expect(updatedSong.sections[2].lines[0].content).toBe("new content");
-      expect(updatedSong.sections[2].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[2].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[2].lines[3].content).toBe("chorus line 4 linked");
-
-      expect(updatedSong.sections[5].lines[0].content).toBe("new content");
-      expect(updatedSong.sections[5].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[5].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[5].lines[3].content).toBe("chorus line 4 linked");
-
-      expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[7].lines[3].content).toBe("chorus line 4 linked");
-
-
-      updatedSong = songActions.updateLineContent(song, song.sections[2].lines[3].id, "new content");
-
-      expect(updatedSong.sections[2].lines[0].content).toBe("chorus line 1 linked");
-      expect(updatedSong.sections[2].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[2].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[2].lines[3].content).toBe("new content");
-
-      expect(updatedSong.sections[5].lines[0].content).toBe("chorus line 1 linked");
-      expect(updatedSong.sections[5].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[5].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[5].lines[3].content).toBe("new content");
-
-      expect(updatedSong.sections[7].lines[0].content).toBe("verse/chorus line linked");
-      expect(updatedSong.sections[7].lines[1].content).toBe("chorus line 2 linked");
-      expect(updatedSong.sections[7].lines[2].content).toBe("chorus line 3 linked");
-      expect(updatedSong.sections[7].lines[3].content).toBe("new content");
-    })
-    test("when section link set and line link set")
+    expect(updatedSong.sections[1].lines[0]).toBe("line 1");
+    expect(updatedSong.sections[1].lines[1]).toBe("new content");
+    expect(updatedSong.sections[1].lines[2]).toBe("line 3");
+    expect(updatedSong.sections[1].lines[3]).toBe("line 4");
   })
-
-  test("update link")
-
-  test("get all lines", () => {
-    expect(songActions.getAllLines(song)).toMatchSnapshot()
+  test("update content - section link", () => {
+    const updatedSong = songActions.updateLine(song, song.sections[2].id, 2, "new content");
+    expect(updatedSong.sectionLinks[song.sections[2].link][2]).toBe("new content");
   })
+  test("update content - section override", () => {
+    let updatedSong = songActions.updateLine(song, song.sections[3].id, 3, "new content");
+    expect(updatedSong.sections[3].overrides[0].with).toBe("new content");
+    expect(updatedSong.sectionLinks[song.sections[3].link][3]).toBe("line 8");
 
-  test("get linked lines", () => {
-    expect.soft(songActions.getLinkedLines(song, undefined)).toMatchSnapshot();
-    expect.soft(songActions.getLinkedLines(song, null)).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "prechorus 2 line 1",
-          "id": "4-1",
-          "link": null,
-        },
-      ]
-    `);
-    expect.soft(songActions.getLinkedLines(song, "chorus1")).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "chorus line 1 linked",
-          "id": "2-1",
-          "link": "chorus1",
-        },
-        {
-          "content": "chorus line 1 linked",
-          "id": "5-1",
-          "link": "chorus1",
-        },
-      ]
-    `)
-    expect.soft(songActions.getLinkedLines(song, "chorus4")).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "chorus line 4 linked",
-          "id": "2-4",
-          "link": "chorus4",
-        },
-        {
-          "content": "chorus line 4 linked",
-          "id": "5-4",
-          "link": "chorus4",
-        },
-        {
-          "content": "chorus line 4 linked",
-          "id": "7-4",
-          "link": "chorus4",
-        },
-      ]
-    `);
-    expect.soft(songActions.getLinkedLines(song, 0)).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "verse/chorus line linked",
-          "id": "3-1",
-          "link": 0,
-        },
-        {
-          "content": "verse/chorus line linked",
-          "id": "7-1",
-          "link": 0,
-        },
-      ]
-    `);
-    expect.soft(songActions.getLinkedLines(song, 1)).toMatchInlineSnapshot(`
-      [
-        {
-          "content": "bridge line linked",
-          "id": "6-4",
-          "link": 1,
-        },
-        {
-          "content": "bridge line linked",
-          "id": "6-9",
-          "link": 1,
-        },
-      ]
-    `);
+    updatedSong = songActions.updateLine(song, song.sections[4].id, 3, "new content");
+    expect(updatedSong.sections[4].overrides[0].with).toBe(0);
+    expect(updatedSong.sectionLinks[song.sections[3].link][3]).toBe("line 8");
+    expect(updatedSong.lineLinks[0]).toBe("new content");
+  })
+  test("update content - line link", () => {
+    const updatedSong = songActions.updateLine(song, song.sections[11].id, 3, "new content");
+    expect(updatedSong.sections[11].lines[3]).toBe(song.sections[11].lines[3]);
+    expect(updatedSong.lineLinks[song.sections[11].lines[3]]).toBe("new content");
   })
 })
-
-

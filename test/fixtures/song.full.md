@@ -2,76 +2,87 @@
 title: Example Song
 album: Example Album
 ---
-# Intro
 
-# Verse
+# empty section
 
-verse 1 line 1
-verse 1 line 2
-verse 1 line 3
-verse 1 line 4
+# no links
 
-# Chorus %%🔗chorus%%
+line 1
+line 2
+line 3
+line 4
 
-chorus line 1 linked
-chorus line 2 linked
-chorus line 3 linked
-chorus line 4 linked
+# linked section %% 🔗 section link 1 %%
 
-# Verse
+line 5
+line 6
+line 7
+line 8
 
-verse 2 line 1
-verse 2 line 2
-verse 2 line 3
-verse 2 line 4
+# linked section (with line override) %% 🔗 section link 1 %%
 
-# Chorus %%🔗chorus%%
+line 5
+line 6
+line 7
+overridden line 8 %% ⛓️‍💥 %%
 
-chorus line 1 linked
-chorus line 2 linked
-chorus line 3 linked
-chorus line 4 linked
+# linked section (with link override) %% 🔗 section link 1 %%
 
-# Bridge
+line 5
+line 6
+line 7
+linked line 1 %% 🔗 0 %%
 
-bridge line 1
-bridge line 2
-bridge line 3 linked %%🔗0%%
-bridge line 4 linked %%🔗1%%
+# linked section (with overrides) %% 🔗 section link 1 %%
 
-bridge line a
-bridge line b
-bridge line 3 linked %%🔗0%%
-bridge line 4 linked %%🔗1%%
+overridden line 5 %% ⛓️‍💥 %%
+linked line 2 %% 🔗 1 %%
+line 7
+line 8
 
-# Interlude
+# to be linked section
 
-# Chorus %%🔗chorus%%
+line 5
+line 6
+line 7
+line 8
 
-chorus line 1 linked
-chorus line 2 linked
-chorus line 3 linked
-chorus line 4 unlinked %%⛓️‍💥%%
+# to be linked section (with linked line)
 
-# Chorus
+line 5
+line 6
+linked line 1 %% 🔗 0 %%
+line 8
 
-chorus line 1
-chorus line 2
-chorus line 3
-chorus line 4 linked %%🔗chorus%%
+# to be linked section (with conflict)
 
-# Refrain
+line 5
+conflicting line 6
+line 7
+line 8
 
-refrain line 1
-refrain line 2
-refrain line 3
-bridge line 4 linked %%🔗1%%
+# linked section 2 %% 🔗 section link 2 %%
 
-# Chorus %%🔗chorus%%
+line 9
+line 10
+line 11
+line 12
 
-chorus line 1 linked
-chorus line 2 linked
-chorus line 3 linked
-bridge line 4 linked %%🔗1%%
+# linked section 2 %% 🔗 section link 2 %%
 
-# Outro
+line 9
+line 10
+line 11
+line 12
+
+# section with same line linked twice
+
+line 13
+line 14
+line 15
+linked line 2 %% 🔗 1 %%
+
+line 17
+line 18
+line 19
+linked line 2 %% 🔗 1 %%

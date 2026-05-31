@@ -1,6 +1,6 @@
 import { saveSong } from '#/fs';
-import { setSectionLink, updateLineContent } from "#/song";
-import type { Section, Song as SongType } from '#/types';
+import { getSectionLine, getSectionLines, setSectionLink, updateLine } from "#/song";
+import type { SectionLinkId, Song as SongType } from '#/types';
 import { createMemo, type Setter } from "solid-js";
 
 export component Song(props: { song: SongType, setSong: Setter<SongType | null> }) {
@@ -17,7 +17,9 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
     const lineOffset = selection.anchorOffset
     if (!lineContent || !lineElement) throw new Error("No line found")
 
-    setSong(updateLineContent(song, lineElement.id, lineContent))
+    const sectionId = lineElement.id.split("|")[0]
+    const lineIndex = parseInt(lineElement.id.split("|")[1])
+    setSong(updateLine(song, sectionId, lineIndex, lineContent))
 
     // Restore cursor position
     const range = document.createRange();
@@ -38,16 +40,12 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
       const section = () => song.sections.find(s => s.id === sectionId)
       if (!section()) throw new Error("Section not found")
 
-      const title = createMemo(() => section().title)
-      const link = createMemo(() => section().link)
-      const lineIds = createMemo(
-        () => section().lines.map(l => l.id),
-        undefined,
-        { equals: (a, b) => a.join(",") === b.join(",") }
-      )
+      const title = createMemo(() => section()!.title)
+      const link = createMemo(() => section()!.link)
+      const lineIndices = createMemo(() => getSectionLines(song, sectionId).map((_, i) => i))
 
       const toggleSectionLink = () => {
-        let newLink: Section["link"] = link() ? undefined : section().title.toLowerCase().replace(/\s+/g, "-")
+        let newLink: SectionLinkId | null = link() ? null : section()!.title.toLowerCase().replace(/\s+/g, "-")
 
         try {
           setSong(setSectionLink(song, sectionId, newLink))
@@ -62,12 +60,10 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
       </button>
       <h2 contenteditable={false} class="col-span-2 text-xl text-gray-600">{title()}</h2>
 
-      for (const lineId of lineIds()) {
-        const line = createMemo(() => song.sections.flatMap(s => s.lines).find(l => l.id === lineId))
-        if (!line()) throw new Error("Line not found")
-
-        <span id={lineId} class="col-start-2 col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
-          {line().content}
+      for (const i of lineIndices()) {
+        const line = createMemo(() => getSectionLine(song, sectionId, i))
+        <span id={sectionId + "|" + i} class="col-start-2 col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
+          {line()}
         </span>
       }
     }

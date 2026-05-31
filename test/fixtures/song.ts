@@ -1,79 +1,52 @@
 import type { Song } from "#/types";
 
 const buildSong = (): Song => ({
-  title: "Example Song",
-  frontmatter: "",
+  title: "",
+  frontmatter: "title: Example Song\nalbum: Example Album",
   sections: [
+    { id: "section 0", title: "empty section", lines: [] },
+    { id: "section 1", title: "no links", lines: ["line 1", "line 2", "line 3", "line 4"] },
+
+    { id: "section 2", title: "linked section", link: "section link 1", overrides: [] },
     {
-      id: "0", title: "Verse 1", lines: [
-        { id: "0-1", content: "verse 1 line 1" },
-        { id: "0-2", content: "verse 1 line 2" },
-        { id: "0-3", content: "verse 1 line 3" },
-        { id: "0-4", content: "verse 1 line 4" },
-      ]
+      id: "section 3", title: "linked section (with line override)", link: "section link 1", overrides: [
+        { line: 3, with: "overridden line 8" }]
     },
     {
-      id: "1", title: "Prechorus 1", link: "prechorus", lines: [
-        { id: "1-1", content: "prechorus line 1 linked" },
-        { id: "1-2", content: "prechorus line 2 linked" },
-        { id: "1-3", content: "prechorus line 3 linked" },
-        { id: "1-4", content: "prechorus line 4 linked" },
-      ]
+      id: "section 4", title: "linked section (with link override)", link: "section link 1", overrides: [
+        { line: 3, with: 0 }]
     },
     {
-      id: "2", title: "Chorus", link: "chorus", lines: [
-        { id: "2-1", content: "chorus line 1 linked" },
-        { id: "2-2", content: "chorus line 2 linked" },
-        { id: "2-3", content: "chorus line 3 linked" },
-        { id: "2-4", content: "chorus line 4 linked" },
+      id: "section 5", title: "linked section (with overrides)", link: "section link 1", overrides: [
+        { line: 0, with: "overridden line 5" },
+        { line: 1, with: 1 }
       ]
     },
+
+    { id: "section 6", title: "to be linked section", lines: ["line 5", "line 6", "line 7", "line 8"] },
+    { id: "section 7", title: "to be linked section (with linked line)", lines: ["line 5", "line 6", 0, "line 8"] },
+    { id: "section 8", title: "to be linked section (with conflict)", lines: ["line 5", "conflicting line 6", "line 7", "line 8"] },
+
+    { id: "section 9", title: "linked section 2", link: "section link 2", overrides: [] },
+    { id: "section 10", title: "linked section 2", link: "section link 2", overrides: [] },
+
     {
-      id: "3", title: "Verse 2", lines: [
-        { id: "3-1", content: "verse/chorus line linked", link: 0 },
-        { id: "3-2", content: "verse 2 line 2" },
-        { id: "3-3", content: "verse 2 line 3" },
-        { id: "3-4", content: "verse 2 line 4" },
+      id: "section 11", title: "section with same line linked twice", lines: [
+        "line 13", "line 14", "line 15", 1, "",
+        "line 17", "line 18", "line 19", 1,
       ]
-    },
-    {
-      id: "4", title: "Prechorus 2", link: "prechorus", lines: [
-        { id: "4-1", content: "prechorus 2 line 1", link: null },
-        { id: "4-2", content: "prechorus line 2 linked" },
-        { id: "4-3", content: "prechorus line 3 linked" },
-        { id: "4-4", content: "prechorus line 4 linked" },
-      ]
-    },
-    {
-      id: "5", title: "Chorus", link: "chorus", lines: [
-        { id: "5-1", content: "chorus line 1 linked" },
-        { id: "5-2", content: "chorus line 2 linked" },
-        { id: "5-3", content: "chorus line 3 linked" },
-        { id: "5-4", content: "chorus line 4 linked" },
-      ]
-    },
-    {
-      id: "6", title: "Bridge", lines: [
-        { id: "6-1", content: "bridge line 1" },
-        { id: "6-2", content: "bridge line 2" },
-        { id: "6-3", content: "bridge line 3" },
-        { id: "6-4", content: "bridge line linked", link: 1 },
-        { id: "6-5", content: "" },
-        { id: "6-6", content: "bridge line a" },
-        { id: "6-7", content: "bridge line b" },
-        { id: "6-8", content: "bridge line c" },
-        { id: "6-9", content: "bridge line linked", link: 1 },
-      ]
-    },
-    {
-      id: "7", title: "Chorus", lines: [
-        { id: "7-1", content: "verse/chorus line linked", link: 0 },
-        { id: "7-2", content: "chorus line 2 linked" },
-        { id: "7-3", content: "chorus line 3 linked" },
-        { id: "7-4", content: "chorus line 4 linked", link: "chorus" },
-      ]
-    },
-  ]
+    }
+  ],
+
+  sectionLinks: {
+    ["section link 1"]: ["line 5", "line 6", "line 7", "line 8"],
+    ["section link 2"]: ["line 9", "line 10", "line 11", "line 12"],
+  },
+
+  lineLinks: {
+    0: "linked line 1",
+    1: "linked line 2",
+  },
 })
 
 export default buildSong;
