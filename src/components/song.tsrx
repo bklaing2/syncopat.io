@@ -1,7 +1,7 @@
 import { saveSong } from '#/fs';
 import { getSectionLine, getSectionLines, setSectionLink, updateLine } from "#/song";
-import type { SectionLinkId, Song as SongType } from '#/types';
-import { createMemo, type Setter } from "solid-js";
+import type { Section as SectionType, SectionLinkId, Song as SongType } from '#/types';
+import { createSignal, createMemo, type Setter } from "solid-js";
 
 export component Song(props: { song: SongType, setSong: Setter<SongType | null> }) {
   const &{ song, setSong } = props
@@ -30,42 +30,54 @@ export component Song(props: { song: SongType, setSong: Setter<SongType | null> 
     selection.addRange(range);
   }
 
-  <div contenteditable onInput={handleLineUpdate} class="grid grid-cols-[min-content_1fr_max-content] auto-rows-auto">
-    <h1 contenteditable={false} class="col-span-2 text-2xl">{song.title}</h1>
+  <div contenteditable onInput={handleLineUpdate} class="grid grid-cols-[min-content_min-content_1fr_max-content] auto-rows-auto">
+    <h1 contenteditable={false} class="col-span-3 text-2xl">{song.title}</h1>
     <button contenteditable={false} class="mb-8" onClick={() => saveSong(song)}>"Save"</button>
 
     const sectionIds = createMemo(() => song.sections.map(s => s.id))
 
-    for (const sectionId of sectionIds()) {
-      const section = () => song.sections.find(s => s.id === sectionId)
-      if (!section()) throw new Error("Section not found")
+    for (const sectionId of sectionIds())
+      <Section id={sectionId} {song} {setSong} />
+  </div>
+}
 
-      const title = createMemo(() => section()!.title)
-      const link = createMemo(() => section()!.link)
-      const lineIndices = createMemo(() => getSectionLines(song, sectionId).map((_, i) => i))
+component Section(props: { id: SectionType["id"], song: SongType, setSong: Setter<SongType | null> }) {
+  const &{ id: sectionId, song, setSong } = props
+  const [isCollapsed, setIsCollapsed] = createSignal(false)
 
-      const toggleSectionLink = () => {
-        let newLink: SectionLinkId | null = link() ? null : section()!.title.toLowerCase().replace(/\s+/g, "-")
+  const section = () => song.sections.find(s => s.id === sectionId)
+  if (!section()) throw new Error("Section not found")
 
-        try {
-          setSong(setSectionLink(song, sectionId, newLink))
-        } catch (e) {
-          alert(e instanceof Error ? e.message : "Unable to link section")
-        }
-      }
+  const title = createMemo(() => section()!.title)
+  const link = createMemo(() => section()!.link)
+  const lineIndices = createMemo(() => getSectionLines(song, sectionId).map((_, i) => i))
 
-      <button onClick={toggleSectionLink} contenteditable={false} title={link()}>
-        if (link()) "⛓️‍💥"
-        else "🔗"
-      </button>
-      <h2 contenteditable={false} class="col-span-2 text-xl text-gray-600">{title()}</h2>
+  const toggleSectionLink = () => {
+    let newLink: SectionLinkId | null = link() ? null : section()!.title.toLowerCase().replace(/\s+/g, "-")
 
-      for (const i of lineIndices()) {
-        const line = createMemo(() => getSectionLine(song, sectionId, i))
-        <span id={sectionId + "|" + i} class="col-start-2 col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
-          {line()}
-        </span>
-      }
+    try {
+      setSong(setSectionLink(song, sectionId, newLink))
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Unable to link section")
+    }
+  }
+
+  <button onClick={() => setIsCollapsed(prev => !prev)} contenteditable={false} title="Collapse/Expand section">
+    if (isCollapsed()) "›"
+    else "⌄"
+  </button>
+  <button onClick={toggleSectionLink} contenteditable={false} title={link()}>
+    if (link()) "⛓️‍💥"
+    else "🔗"
+  </button>
+  <h2 contenteditable={false} class="col-span-2 text-xl text-gray-600">{title()}</h2>
+
+  <div class={`col-span-full grid grid-cols-subgrid overflow-hidden ${isCollapsed() ? "max-h-0" : ""}`}>
+    for (const i of lineIndices()) {
+      const line = createMemo(() => getSectionLine(song, sectionId, i))
+      <span id={sectionId + "|" + i} class="col-start-3 col-span-full h-6" onKeyDown={(e) => console.log(e.target)}>
+        {line()}
+      </span>
     }
   </div>
 }
